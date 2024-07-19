@@ -6,7 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ElectionDao extends JpaRepository<Election, Long> {
-    List<Election> findByPosition(String role);
+    List<Election> findElectionsByPositionIsLikeIgnoreCase(String position);
+    List<Election> findAllByPosition(String role);
     //List<Election> findByElectionsOrderByCounties(County county);
     List<Election> findByIsActive(boolean isActive);
 }

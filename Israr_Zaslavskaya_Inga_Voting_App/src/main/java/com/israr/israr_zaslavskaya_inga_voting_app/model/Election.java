@@ -1,11 +1,11 @@
 package com.israr.israr_zaslavskaya_inga_voting_app.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.lang.reflect.Array;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -21,8 +21,10 @@ public class Election {
     private Boolean isActive;
     private String year;
 
-    @OneToMany(targetEntity = Candidate.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "candidate_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "election", cascade = CascadeType.ALL)
+//    @JoinColumn(name = "candidate_id")
     private List<Candidate> candidates;
 
     @ManyToMany

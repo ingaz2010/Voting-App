@@ -17,11 +17,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.Year;
+import java.util.*;
 
 @Controller
 @Slf4j
@@ -63,49 +62,25 @@ public class AuthorizationController {
 
     @PostMapping("/register/save")
     public String registerVoter(@Valid @ModelAttribute("voter") VoterDto voter, BindingResult bindingResult, Model model) {
-        Voter existing = voteService.findVoterByIdNumber(voter.getIdNumber());
-        if (existing != null) {
-            bindingResult.rejectValue("idNumber", null, "Account with this State Id already exists");
-        }
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("voter", voter);
-            return "register-voter";
-        }
-        voteService.saveVoter(voter);
+        voteService.createVoter(voter, bindingResult, model);
         return "redirect:/register?success";
     }
 
     @GetMapping("/confirmInfo")
     public String confirmInfo( Model model, Principal p) {
-        String username = p.getName();
-        System.out.println("Username: " + username);
-        Voter voterDto = voteService.findVoterByEmail(username);
-        VoterDto existing = new VoterDto();
-        existing.setFirstName(voterDto.getFirstName());
-        existing.setLastName(voterDto.getLastName());
-        existing.setEmail(voterDto.getEmail());
-        existing.setPhone(voterDto.getPhone());
-        existing.setDob(voterDto.getDob());
-        existing.setGender(voterDto.getGender());
-        existing.setAddress(voterDto.getAddress());
-        existing.setCity(voterDto.getCity());
-        existing.setState(voterDto.getState());
-        existing.setZip(voterDto.getZip());
-        existing.setCounty(voterDto.getCounty());
-        existing.setParty(voterDto.getParty());
-        model.addAttribute("voter", existing);
+        voteService.displayVoterInfo(model, p);
         return "confirmInfo";
     }
 
-    @PutMapping("/confirmInfo/save/{id}")
-    public String confirmAndSaveVoterChanges(@PathVariable Long id, Model model, @Valid @ModelAttribute("voter") VoterDto voterDto, Principal p){
+    @PutMapping("/confirmInfo/save")
+    public String confirmAndSaveVoterChanges( Model model, @Valid @ModelAttribute("voter") VoterDto voterDto, Principal p){
         String username = p.getName();
         Voter existing = voteService.findVoterByEmail(username);
-        voterDto.setId(id);
+        voterDto.setId(voterDto.getId());
 
-        System.out.println("going to update voter " + id);
+        System.out.println("going to update voter " + voterDto.getId());
 
-        voteService.saveVoter(voterDto);
+        voteService.updateVoter(voterDto, existing);
         log.info("Updating voter with ID={}", voterDto.getIdNumber());
         return "redirect:/confirmInfo?success";
     }
@@ -119,15 +94,11 @@ public class AuthorizationController {
 
     @PostMapping("/registercandidate/save")
     public String registerCandidate(@Valid @ModelAttribute("candidate") CandidateDto candidate, BindingResult bindingResult, Model model) {
-        Candidate existing = voteService.findCandidateByName(candidate.getName());
-        if (existing != null) {
-            bindingResult.rejectValue("name", null, "Candidate with this Name already exists");
-        }
+       voteService.findOrCreateCandidate(candidate, bindingResult, model);
         if (bindingResult.hasErrors()) {
             model.addAttribute("candidate", candidate);
             return "register-candidate";
         }
-        voteService.saveCandidate(candidate);
         return "redirect:/registercandidate?success";
     }
 
@@ -135,8 +106,10 @@ public class AuthorizationController {
     public String saveElectionForm(@ModelAttribute String position, Model model) {
 
         Election election = new Election();
+        List<County> counties = voteService.getCounties();
 
         model.addAttribute("election", election);
+        model.addAttribute("counties", counties);
         return "set-election";
     }
 
@@ -201,31 +174,31 @@ public class AuthorizationController {
             System.out.println("Selected Candidate: " + candidate1);
             voterChoice.setCandidateSelected(candidate);
             candidate.setVotes(candidate.getVotes()+1);
-            String countyName = voter.getCounty();
+            String countyName = voter.getCounty().getName();
             County county = countyDao.findByName(countyName);
-            switch((int)candidate.getId()){
-                case 1:
-                    county.setCandidate1votes(county.getCandidate1votes() + 1);
-                    break;
-                case 2:
-                    county.setCandidate2votes(county.getCandidate2votes() + 1);
-                    break;
-                case 3:
-                    county.setCandidate3votes(county.getCandidate3votes() + 1);
-                    break;
-                case 4:
-                    county.setCandidate4votes(county.getCandidate4votes() + 1);
-                    break;
-                case 5:
-                    county.setCandidate5votes(county.getCandidate5votes() + 1);
-                    break;
-                case 6:
-                    county.setCandidate6votes(county.getCandidate6votes() + 1);
-                    break;
-                default:
-                    System.out.println("Invalid Voter Choice");
-                    break;
-            }
+//            switch((int)candidate.getId()){
+//                case 1:
+//                    county.setCandidate1votes(county.getCandidate1votes() + 1);
+//                    break;
+//                case 2:
+//                    county.setCandidate2votes(county.getCandidate2votes() + 1);
+//                    break;
+//                case 3:
+//                    county.setCandidate3votes(county.getCandidate3votes() + 1);
+//                    break;
+//                case 4:
+//                    county.setCandidate4votes(county.getCandidate4votes() + 1);
+//                    break;
+//                case 5:
+//                    county.setCandidate5votes(county.getCandidate5votes() + 1);
+//                    break;
+//                case 6:
+//                    county.setCandidate6votes(county.getCandidate6votes() + 1);
+//                    break;
+//                default:
+//                    System.out.println("Invalid Voter Choice");
+//                    break;
+//            }
 
             voteService.saveVoterChoice(voterChoice);
             candidateDao.save(candidate);
@@ -263,9 +236,9 @@ public class AuthorizationController {
         voterDto.setGender(voter.getGender());
         voterDto.setAddress(voter.getAddress());
         voterDto.setCity(voter.getCity());
-        voterDto.setState(voter.getState());
+        //voterDto.setState(voter.getState());
         voterDto.setZip(voter.getZip());
-        voterDto.setCounty(voter.getCounty());
+        //voterDto.setCounty(voter.getCounty());
         voterDto.setParty(voter.getParty());
 //        System.out.println("going to update voter " + existing.getIdNumber());
 //        System.out.println("voterId: " + voterDto.getId());

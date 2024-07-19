@@ -1,5 +1,6 @@
 package com.israr.israr_zaslavskaya_inga_voting_app.model;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,10 +36,10 @@ public class Voter {
     private String address;
     private String city;
     // @Column(nullable = false)
-    private String state;
+    //private String state;
     private String zip;
     // @Column(nullable = false)
-    private String county;
+   // private String county;
     private String party;
 
     private boolean voted = false;
@@ -51,6 +52,14 @@ public class Voter {
             joinColumns = {@JoinColumn(name = "voter_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
+
+    @ManyToOne
+    @JoinColumn(name = "county_id")
+    private County county;
+
+    @ManyToOne
+    @JoinColumn(name = "state_id")
+    private State state;
 
 //    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 //    @JoinTable(name = "voter_election",
