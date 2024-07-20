@@ -356,7 +356,7 @@ public class VoteServiceImpl implements VoteService{
             }
         }
         System.out.println("Election for: " + current);
-        //model.addAttribute("election", election);
+        //model.addAttribute("election", current);
         if(current == null) {
             return "redirect:/election2";
         }

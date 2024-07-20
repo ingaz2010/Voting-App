@@ -48,7 +48,7 @@
 <form method="post" role="form" th:action="@{/election/save}" th:object="${voterChoice}">
 <!--    <input type="hidden" th:field="*{id}" />-->
     <h2 class="text-center">Select Candidate</h2>
-    <h2 class="text-center">President</h2>
+    <h2 class="text-center" >President</h2>
     <div>
         <div th:each="c : ${candidates}">
             <div id="display-candidate">

@@ -212,8 +212,26 @@ public class AuthorizationController {
         Candidate selected = candidateDao.findById(voterChoiceDto.getCandidateOfChoice()).orElse(null);
         voterChoice.setCandidateSelected(selected);
 
-        voterChoiceDao.save(voterChoice);
+        Election election = electionDao.findElectionByPosition(selected.getRole());
+       //Election election = electionDao.findById(electionDto.getId()).orElse(null);
+        System.out.println("Voting election:" + election);
+        voterChoice.setElection(election);
 
+        List<VoterChoice> allVoterChoices = voterChoiceDao.findAllByVoterId(current.getId());
+        Boolean foundAndUpdated = false;
+        for(VoterChoice choice : allVoterChoices) {
+           System.out.println("Looping through list election id:" + choice.getElection().getId());
+           System.out.println("Current election id:" + election.getId());
+            if(choice.getDate().equals(voterChoice.getDate()) && choice.getElection().equals(election)) {
+                choice.setCandidateSelected(selected);
+                voterChoiceDao.save(choice);
+                foundAndUpdated = true;
+            }
+        }
+        if(!foundAndUpdated) {
+
+            voterChoiceDao.save(voterChoice);
+        }
 //        List<VoterChoice> allChoices = voterChoiceDao.findAllByVoterId(current.getId());
 //        for (VoterChoice choice : allChoices) {
 //        }
