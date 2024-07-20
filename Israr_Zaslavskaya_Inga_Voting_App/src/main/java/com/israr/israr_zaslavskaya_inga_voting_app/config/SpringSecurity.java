@@ -35,9 +35,9 @@ public class SpringSecurity {
                         .requestMatchers("/election2").permitAll()
                         .requestMatchers("/review").permitAll()
                         .requestMatchers("/submitted").permitAll()
-                        .requestMatchers("/registerCandidate").hasRole("ADMIN")
-                        .requestMatchers("/viewResults").hasRole("ADMIN")
-                        .requestMatchers("/registerCandiate").hasRole("ADMIN")
+//                        .requestMatchers("/register-candidate").hasRole("ADMIN")
+//                        .requestMatchers("/viewResults").hasRole("ADMIN")
+//                        .requestMatchers("/set-election").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(

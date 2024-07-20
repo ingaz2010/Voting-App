@@ -46,7 +46,7 @@ nav{
     justify-content: space-evenly;
     align-items: center;
 }
-.user-menu-item{
+.voter-menu-item{
     border: 2px solid;
     width: 350px;
     height: 350px;
@@ -59,7 +59,7 @@ nav{
     transition-property: width, height;
     transition-duration: 0.1s;
 }
-.user-menu-item:hover{
+.voter-menu-item:hover{
     width:375px;
     heigh: 375px;
 }

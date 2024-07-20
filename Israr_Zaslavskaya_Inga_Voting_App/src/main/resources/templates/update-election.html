@@ -13,13 +13,34 @@
 <style>
 </style>
 <body style="background-color: dodgerblue">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:fragment="header">
-    <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/}">Use your voice</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
+<div id="logo">Use your voice</div>
+<nav id="menu">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="menu-admin">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a
+                    class="nav-link dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    href="#"
+                    role="button"
+                    aria-expanded="false"
+            >Elections</a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="election">Election</a></li>
+                <li><a class="dropdown-item" href="election2">Election</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="candidateInfo">Information about Candidates</a></li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="review">Review</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="confirmInfo">Account Information</a>
+        </li>
+    </ul>
 </nav>
 <br />
 <br />

@@ -94,7 +94,7 @@ public class AuthorizationController {
         return "redirect:/confirmInfo?success";
     }
 
-    @GetMapping("/registercandidate")
+    @GetMapping("/register-candidate")
     public String registerCandidateForm(Model model) {
         CandidateDto candidate = new CandidateDto();
         model.addAttribute("candidate", candidate);
@@ -285,7 +285,7 @@ public class AuthorizationController {
         return "redirect:/review/save?success";
     }
 
-    @GetMapping("candidates-info")
+    @GetMapping("candidateInfo")
     public String viewCandidatesInfo(Model model){
         List<Candidate> candidates = candidateDao.findAll();
         model.addAttribute("candidates", candidates);
@@ -345,7 +345,7 @@ public class AuthorizationController {
 
     }
 
-    @GetMapping("/results")
+    @GetMapping("/viewResults")
     public String viewResults(Model model) {
         List<VoterChoice> voterChoices = voteService.findAllVoterChoices();
         List<Candidate> candidates = candidateDao.findAll();

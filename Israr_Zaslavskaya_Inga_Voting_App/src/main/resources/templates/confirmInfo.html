@@ -13,7 +13,7 @@
 <nav id="menu">
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="index1.html">Home</a>
+            <a class="nav-link active" aria-current="page" href="main-menu">Home</a>
         </li>
         <li class="nav-item dropdown">
             <a
@@ -27,11 +27,11 @@
                 <li><a class="dropdown-item" href="election">Election</a></li>
                 <li><a class="dropdown-item" href="election2">Election</a></li>
                 <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="candidateInfo.html">Information about Candidates</a></li>
+                <li><a class="dropdown-item" href="candidateInfo">Information about Candidates</a></li>
             </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="review.html">Review</a>
+            <a class="nav-link" href="review">Review</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="confirmInfo">Account Information</a>
@@ -39,7 +39,6 @@
     </ul>
 </nav>
 
-</nav>
 <div th:if="${param.success}">
     <div class="alert alert-info">You've successfully updated your information!</div>
 </div>

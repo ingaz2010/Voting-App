@@ -54,19 +54,19 @@
             <li th:each="c : ${selected}">
                 <tr>
                     <td><span th:text="${c.election.position}"></span></td>
-                    <td><p th:text="${c.candidateSelected.name}"></p></td>
-                    <td><button class="btn btn-primary" type="submit" th:href="@{/election}">Edit</button></td>
+                    <td><span th:text="${c.candidateSelected.name}"></span></td>
+                    <td><button class="btn btn-primary" type="submit" th:href="@{/election}" id="back-to-election">Edit</button></td>
                 </tr>
             </li>
         </ul>
 
 
     </table>
-    <button class="btn btn-primary" type="submit">Submit</button>
+    <button class="btn btn-primary" type="submit" id="">Submit</button>
 </div>
 
 <script>
-    document.getElementsByClassName('btn btn-primary')
+    document.getElementById('back-to-election')
         .addEventListener('click', function () {
             window.location.href = 'election';
         });
