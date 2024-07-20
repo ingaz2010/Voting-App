@@ -63,5 +63,7 @@ public interface VoteService {
 
     void updateVoter(VoterDto voterDto, Voter voter);
 
+    Election findElectionById(Long id);
+
     //void findOrCandidate(CandidateDto candidateDto);
 }

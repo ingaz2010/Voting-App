@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Use your voice</title>
+    <link rel="stylesheet"  href="/static/css/style2.css" th:href="@{/css/style2.css}">
+    <!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"-->
+    <!--          rel="stylesheet"-->
+    <!--          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"-->
+    <!--          crossorigin="anonymous">-->
+    <script th:src="@{/js/index.js}"></script>
+    <script src="/js/index.js"></script>
+    <style>
+        body{
+            background-color: antiquewhite;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg" style="background-color: rgba(0,0,0, 0.4);">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="menu-admin" th:href="@{/menu-admin}" id="logo">Use your voice</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!--                <li class="nav-item">-->
+                <!--                    <a class="nav-link active" aria-current="page" th:href="@{/register}">Register</a>-->
+                <!--                </li>-->
+                <!--                <li class="nav-item">-->
+                <!--                    <a class="nav-link active" aria-current="page" th:href="@{/login}">Login</a>-->
+                <!--                </li>-->
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <h1 class="welcome"> Welcome  </h1>
+    </div>
+</div>
+
+<br><br><br>
+<div id="voter-starter-menu">
+    <div id="section1">
+        <div id="update-info" class="voter-menu-item" style="background-image: url('/images/flag2.jpg')"
+             th:href="@{/menu-admin}"  href="confirmInfo">
+            <h2>Update your information</h2>
+        </div>
+        <div id="go-to-ballot" class="voter-menu-item" style="background-image: url('/images/vote.jpg')"
+             th:href="@{/election}"  href="election">
+            <h2> Vote </h2>
+        </div>
+    </div><br><br><br>
+    <div id="Section2">
+        <div id="candidate-info" class="voter-menu-item" style="background-image: url(/images/image.jpg)"
+             th:href="@{/candidates-info}"  href="candidates-info">
+            <h2> About Candidates </h2>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById('update-info')
+        .addEventListener('click', function () {
+            window.location.href = 'confirmInfo';
+        });
+    document.getElementById('go-to-ballot')
+        .addEventListener('click', function () {
+            window.location.href = 'election';
+        });
+    document.getElementById('candidate-info')
+        .addEventListener('click', function () {
+            window.location.href = 'candidateInfo';
+        });
+</script>
+</body>
+</html>

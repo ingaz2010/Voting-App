@@ -49,8 +49,17 @@ public class AuthorizationController {
 
     @GetMapping("/login")
     public String login() {
-
         return "login";
+    }
+
+    @GetMapping("/main-menu")
+    public String mainMenu() {
+        return "main-menu";
+    }
+
+    @GetMapping("/menu-admin")
+    public String adminMenu() {
+        return "menu-admin";
     }
 
     @GetMapping("/register")
@@ -115,19 +124,49 @@ public class AuthorizationController {
 
     @PostMapping("/set-election/save")
     public String saveElection(@Valid @ModelAttribute("election") ElectionDto election, BindingResult bindingResult, Model model) {
-        Election existing = null;
-        List<Election> elections = electionDao.findByIsActive(election.getIsActive());
-        for (Election e : elections) {
-            if (e.getPosition() == election.getPosition()) {
-                existing = e;
+        try {
+            Election existing = null;
+            List<Election> elections = electionDao.findAll();
+            for (Election e : elections) {
+                if (e.getPosition().equals(election.getPosition()) && e.getIsActive() == election.getIsActive() && e.getYear().equals(election.getYear())) {
+                    existing = e;
+                    bindingResult.rejectValue("name", null, "This section of the ballot already exists");
+                }
             }
-        }
-        if (existing != null) {
-            bindingResult.rejectValue("name", null, "This section of the ballot already exists");
-        }
 
-        voteService.saveElection(election);
-        return "redirect:/set-election?success";
+            if (bindingResult.hasErrors()) {
+                model.addAttribute("election", election);
+                return "set-election";
+            }
+
+            if (existing == null) {
+                existing = new Election();
+                existing.setPosition(election.getPosition());
+                existing.setIsActive(election.getIsActive());
+                existing.setYear(election.getYear());
+                voteService.saveELection(existing); // Save existing instead of election
+            }
+
+            return "redirect:/set-election?success";
+        } catch (Exception e) {
+            // Log the exception
+            e.printStackTrace();
+            // Optionally handle and return a specific error page
+            return "redirect:/main-menu";
+        }
+//        Election existing = null;
+//        List<Election> elections = electionDao.findByIsActive(election.getIsActive());
+//        for (Election e : elections) {
+//            if (e.getPosition() == election.getPosition()) {
+//                existing = e;
+//            }
+//        }
+//        if (existing != null) {
+//            bindingResult.rejectValue("name", null, "This section of the ballot already exists");
+//        }
+//
+//        voteService.saveElection(election);
+//        return "redirect:/set-election?success";
     }
 
     @GetMapping("/election")
@@ -250,7 +289,7 @@ public class AuthorizationController {
     public String viewCandidatesInfo(Model model){
         List<Candidate> candidates = candidateDao.findAll();
         model.addAttribute("candidates", candidates);
-        return "candidateInfo";
+        return "candidates-info";
     }
 
     @GetMapping("/election2")
@@ -330,5 +369,39 @@ public class AuthorizationController {
 
         return "viewResults";
     }
+
+    @GetMapping("/search-election")
+    public String searchElection(Model model) {
+        List<Election> elections = electionDao.findAll();
+        model.addAttribute("elections", elections);
+        return "search-election";
+    }
+
+    @GetMapping("/update-election/{id}")
+    public String updateElectionForm(@PathVariable Long id, Model model) {
+        Election election = voteService.findElectionById(id);
+        model.addAttribute("election", election);
+        return "update-election";
+    }
+
+    @PutMapping("/update-election/save/{id}")
+    public String updateElection(@PathVariable Long id, @ModelAttribute("election") ElectionDto electionDto, BindingResult bindingResult, Model model){
+        Election existing = voteService.findElectionById(id);
+        if (bindingResult.hasErrors()) {
+            // Handle validation errors if any
+            model.addAttribute("election", electionDto);
+            return "update-election"; // Return to the form with validation errors
+        }
+        if(existing == null){
+            return "redirect:/update-election?error";
+        }
+        //existing.setId(id);
+        existing.setPosition(electionDto.getPosition());
+        existing.setIsActive(electionDto.getIsActive());
+        existing.setYear(electionDto.getYear());
+        voteService.saveELection(existing);
+        return "redirect:/update-election?success";
+    }
+
 
 }

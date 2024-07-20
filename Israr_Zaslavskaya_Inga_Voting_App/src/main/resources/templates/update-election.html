@@ -27,15 +27,18 @@
 <div class="container" style="background-image: url(/static/images/flag.jpg)">
     <div class="row col-md-6 offset-md-3" id="loginWindow">
         <div class="card">
+            <div th:if="${param.error}">
+                <div class="alert alert-danger">Not Able to Update.</div>
+            </div>
             <div th:if="${param.success}">
-                <div class="alert alert-info">Election has been successfully registered!</div>
+                <div class="alert alert-info">Election has been successfully updated!</div>
             </div>
             <div class="card-header">
                 <h2 class="text-center">Register Election Ballot Section</h2>
             </div>
             <div class="card-body" style=" background-color: rgba(0,0,0,0);">
-                <form method="post" role="form" th:action="@{/set-election/save}" th:object="${election}">
-
+                <form method="post" role="form" th:action="@{/update-election/save/{id}(id=${election.id})}" th:object="${election}">
+                    <input type="hidden" name="_method" value="put" />
                     <div class="form-group mb-3">
                         <label class="form-label">Election for Position </label>
                         <select class="form-control"
@@ -78,17 +81,17 @@
                         </p>
                     </div>
 
-<!--                    <form id="selectCounties" role="form" th:action="@{set-election/save}" th:object="${counties}">-->
-<!--                        <h3> Choose Counties:</h3>-->
-<!--                        <p th:each="county : ${counties}"></p>-->
-<!--                        <div>-->
-<!--                            <input type="checkbox" id="county1" th:field="${counties}" th:value="${county}" checked />-->
-<!--                            <label th:for="${name}" th:text="${name}"></label>-->
-<!--                        </div>-->
-<!--                    </form>-->
+                    <!--                    <form id="selectCounties" role="form" th:action="@{/set-election/save}" th:object="${election}">-->
+                    <!--                        <h3> Choose Counties:</h3>-->
+                    <!--                        <p th:each="county : ${counties}"></p>-->
+                    <!--                        <div>-->
+                    <!--                            <input type="checkbox" id="county-${county.id}" th:field="*{counties}" th:value="${county.id}" />-->
+                    <!--                            <label th:for="'county-' + ${county.id}" th:text="${county.name}"></label>-->
+                    <!--                        </div>-->
+                    <!--                    </form>-->
 
                     <div class="form-group mb-3">
-                        <button class="btn btn-primary" type="submit">Register</button>
+                        <button class="btn btn-primary" type="submit">Update</button>
                     </div>
                 </form>
             </div>

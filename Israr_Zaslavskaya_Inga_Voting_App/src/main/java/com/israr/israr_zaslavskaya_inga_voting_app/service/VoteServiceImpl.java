@@ -341,6 +341,11 @@ public class VoteServiceImpl implements VoteService{
         voterDao.save(voter);
     }
 
+    @Override
+    public Election findElectionById(Long id) {
+        return electionDao.findById(id).orElseThrow(() -> new NoSuchElementException("Election with id " + id + " is not found"));
+    }
+
 
     private Voter convertDtoToVoter (VoterDto voterDto, Voter voter){
             //voter.setId(voterDto.getId());
