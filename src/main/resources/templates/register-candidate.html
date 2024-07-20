@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <link rel="stylesheet"  href="/static/css/style.css" th:href="@{/css/style.css}">
+    <!--    <link rel="stylesheet" th:href="@{/css/style.css}">-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<style>
+</style>
+<body style="background-color: dodgerblue">
+<div id="logo">Use your voice</div>
+<nav id="menu">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="menu-admin">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a
+                    class="nav-link dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    href="#"
+                    role="button"
+                    aria-expanded="false"
+            >Elections</a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="election">Election</a></li>
+                <li><a class="dropdown-item" href="election2">Election</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="candidateInfo">Information about Candidates</a></li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="review">Review</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="confirmInfo">Account Information</a>
+        </li>
+    </ul>
+</nav>
+<br />
+<br />
+<br />
+<div class="container" style="background-image: url(/static/images/flag.jpg)">
+    <div class="row col-md-6 offset-md-3" id="loginWindow">
+        <div class="card">
+            <div th:if="${param.error}">
+                <div class="alert alert-danger">Unable to register a candidate.</div>
+            </div>
+            <div th:if="${param.success}">
+                <div class="alert alert-info">Candidate has been successfully registered!</div>
+            </div>
+            <div class="card-header">
+                <h2 class="text-center">Register Candidate</h2>
+            </div>
+            <div class="card-body" style=" background-color: rgba(0,0,0,0);">
+                <form method="post" role="form" th:action="@{/register-candidate/save}" th:object="${candidate}">
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Name</label>
+                        <input class="form-control"
+                               id="name"
+                               name="name"
+                               placeholder="Enter name"
+                               th:field="*{name}"
+                               type="text"
+                        />
+                        <p th:errors="*{name}" class="text-danger"
+                           th:if="${#fields.hasErrors('name')}">
+                        </p>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Getting Elected for position</label>
+                        <input class="form-control"
+                               id="role"
+                               name="role"
+                               placeholder="Position"
+                               th:field="*{role}"
+                               type="text"
+                        />
+                        <p th:errors="*{role}" class="text-danger"
+                           th:if="${#fields.hasErrors('role')}">
+                        </p>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Party</label>
+                        <select class="form-control"
+                                id="party"
+                                name="party"
+                                placeholder="Party"
+                                th:field="*{party}">
+                            <option th:value="' '"> Choose one</option>
+                            <option th:value="'D'"> Democratic Party</option>
+                            <option th:value="'R'"> Republican Party</option>
+                            <option th:value="'I'">Independent Party</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Description</label>
+
+                        <textarea class="form-control" name="description" id="description" th:field="*{description}"></textarea>
+                        <p th:errors="*{description}" class="text-danger"
+                           th:if="${#fields.hasErrors('description')}">
+                        </p>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <button class="btn btn-primary" type="submit">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
