@@ -127,9 +127,6 @@ public class VoteServiceImpl implements VoteService{
         Voter voter = (Voter) session.getAttribute("voter");
         if(!voter.isVoted()){
             voter.setVoted(true);
-            Candidate candidate = candidateDao.findById(id).get();
-            candidate.setVotes(candidate.getVotes()+1);
-            candidateDao.save(candidate);
             voterDao.save(voter);
         }
     }
@@ -387,6 +384,7 @@ public class VoteServiceImpl implements VoteService{
         voterChoice.setCandidateSelected(selected);
 
         Election election = electionDao.findElectionByPosition(selected.getRole());
+        //Election election = electionDao.findById(electionDto.getId()).orElse(null);
         System.out.println("Voting election:" + election);
         voterChoice.setElection(election);
 

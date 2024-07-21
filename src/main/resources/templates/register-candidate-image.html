@@ -58,7 +58,7 @@
                 <h2 class="text-center">Register Candidate</h2>
             </div>
             <div class="card-body" style=" background-color: rgba(0,0,0,0);">
-                <form method="post" role="form" th:action="@{/register-candidate/save}" th:object="${candidate}">
+                <form method="post" role="form" th:action="@{/register-candidate-image/save}" th:object="${candidate}" enctype="multipart/form-data">
 
                     <div class="form-group mb-3">
                         <label class="form-label">Name</label>
@@ -110,25 +110,20 @@
                         </p>
                     </div>
 
-<!--                    <div class="col-sm-3">-->
-<!--                        <form method="post" action="/upload" enctype="multipart/form-data">-->
-<!--                            <div class="form-group">-->
-<!--                                <label for="file">Select File to Upload:</label>-->
-<!--                                <input type="file" id="file" name="file" accept=".jpg, .png, .gif">-->
-<!--                            </div>-->
-<!--                            <button type="submit" class="btn btn-primary">Upload File</button>-->
-<!--                        </form>-->
-<!--                    </div>-->
+                    <!-- File upload field -->
+                    <div class="form-group">
+                        <label for="file">Select Image:</label>
+                        <input type="file" id="file" name="file" accept=".jpg, .png, .gif" required>
+                    </div>
 
-
-                    <!--                    <th:block th:each="userList: ${list}">-->
-<!--                        <div class="col-sm-3">-->
-<!--                            <div> <a th:href="@{'/downloadfile?id=' + ${userList.id}}"><i class="fa fa-download"></i></a></div>-->
-<!--                            <div><img th:src="@{'/image?id='+ ${userList.id}}" width="100px" height="50px"></div>-->
-<!--                            <div>[[${userList.userProfilePic}]]</div>-->
-<!--                            <div>([[${userList.size}]]) B</div>-->
+<!--                    <form method="post" action="/upload" enctype="multipart/form-data">-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="file">Select File to Upload:</label>-->
+<!--                            <input type="file" id="file" name="file" accept=".jpg, .png, .gif">-->
 <!--                        </div>-->
-<!--                    </th:block>-->
+<!--                        <button type="submit" class="btn btn-primary">Upload File</button>-->
+<!--                    </form>-->
+
 
                     <div class="form-group mb-3">
                         <button class="btn btn-primary" type="submit">Register</button>

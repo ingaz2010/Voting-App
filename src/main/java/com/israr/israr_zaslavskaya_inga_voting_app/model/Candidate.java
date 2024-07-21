@@ -22,7 +22,7 @@ public class Candidate {
     private String description;
     //private String year;
 
-    private long votes = 0;
+    private String imageUrl;
 
     @ManyToMany(mappedBy = "candidates")
     private Set<County> countiesRepresents;
@@ -30,4 +30,8 @@ public class Candidate {
     @ManyToOne
     @JoinColumn(name = "election_id")
     private Election election;
+
+    @OneToOne
+    @JoinColumn(name = "image_id")
+    private AdminUpload adminUpload;
 }
