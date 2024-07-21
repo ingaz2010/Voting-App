@@ -3,21 +3,22 @@ package com.israr.israr_zaslavskaya_inga_voting_app.service;
 import com.israr.israr_zaslavskaya_inga_voting_app.dao.*;
 import com.israr.israr_zaslavskaya_inga_voting_app.dto.CandidateDto;
 import com.israr.israr_zaslavskaya_inga_voting_app.dto.ElectionDto;
+import com.israr.israr_zaslavskaya_inga_voting_app.dto.VoterChoiceDto;
 import com.israr.israr_zaslavskaya_inga_voting_app.dto.VoterDto;
 import com.israr.israr_zaslavskaya_inga_voting_app.model.*;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.Year;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 public class VoteServiceImpl implements VoteService{
@@ -347,7 +348,7 @@ public class VoteServiceImpl implements VoteService{
     }
 
     @Override
-    public String displayELection(String string, Model model) {
+    public String displayELection(String string, Model model, String toReturn) {
         Election current = null;
         List<Election> election = electionDao.findByIsActive(true);
         for (Election e : election) {
@@ -370,7 +371,69 @@ public class VoteServiceImpl implements VoteService{
 
         System.out.println(candidates);
         model.addAttribute("candidates", candidates);
-        return "election1";
+        return toReturn;
+    }
+
+    @Override
+    public void voteElection(@Valid @ModelAttribute("voterChoice") VoterChoiceDto voterChoiceDto, Principal p, Model model) {
+        VoterChoice voterChoice = new VoterChoice();
+        Voter current = findVoterByEmail(p.getName());
+        voterChoice.setVoter(current);
+
+        System.out.println("Selected:" + voterChoiceDto.getCandidateOfChoice());
+
+        voterChoice.setDate(LocalDate.now());
+        Candidate selected = candidateDao.findById(voterChoiceDto.getCandidateOfChoice()).orElse(null);
+        voterChoice.setCandidateSelected(selected);
+
+        Election election = electionDao.findElectionByPosition(selected.getRole());
+        System.out.println("Voting election:" + election);
+        voterChoice.setElection(election);
+
+        List<VoterChoice> allVoterChoices = voterChoiceDao.findAllByVoterId(current.getId());
+        Boolean foundAndUpdated = false;
+        for(VoterChoice choice : allVoterChoices) {
+            System.out.println("Looping through list election id:" + choice.getElection().getId());
+            System.out.println("Current election id:" + election.getId());
+            if(choice.getDate().equals(voterChoice.getDate()) && choice.getElection().equals(election)) {
+                choice.setCandidateSelected(selected);
+                voterChoiceDao.save(choice);
+                foundAndUpdated = true;
+            }
+        }
+        if(!foundAndUpdated) {
+
+            voterChoiceDao.save(voterChoice);
+        }
+    }
+
+    @Override
+    public void displayElectionResults(Model model) {
+        List<VoterChoice> voterChoices = findAllVoterChoices();
+        List<Candidate> candidates = candidateDao.findAll();
+        List<County> counties = countyDao.findAll();
+        List<State> states = stateDao.findAll();
+
+        // Group voter choices by state and county
+        Map<State, Map<County, Map<Candidate, Long>>> results = new LinkedHashMap<>();
+
+        for (State state : states) {
+            Map<County, Map<Candidate, Long>> stateResults = new LinkedHashMap<>();
+            for (County county : state.getCounties()) {
+                Map<Candidate, Long> countyResults = new HashMap<>();
+                for (Candidate candidate : candidates) {
+                    // Count votes for this candidate in this county
+                    long voteCount = voterChoices.stream()
+                            .filter(vc -> vc.getCandidateSelected().equals(candidate) && vc.getVoter().getCounty().equals(county))
+                            .count();
+                    countyResults.put(candidate, voteCount);
+                }
+                stateResults.put(county, countyResults);
+            }
+            results.put(state, stateResults);
+        }
+
+        model.addAttribute("results", results);
     }
 
 

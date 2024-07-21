@@ -28,19 +28,21 @@ public class AuthorizationController {
     private final CandidateDao candidateDao;
     private final ElectionDao electionDao;
     private final VoterChoiceDao voterChoiceDao;
+    private final StateDao stateDao;
     private VoteService voteService;
     private CountyDao countyDao;
    // private CustomVoterDetailsService customVoterDetailsService;
     private VoterChoice voterChoice;
 
     @Autowired
-    public AuthorizationController(VoteService voteService, VoterDao voterDao, CandidateDao candidateDao, ElectionDao electionDao, CountyDao countyDao, VoterChoiceDao voterChoiceDao) {
+    public AuthorizationController(VoteService voteService, VoterDao voterDao, CandidateDao candidateDao, ElectionDao electionDao, CountyDao countyDao, VoterChoiceDao voterChoiceDao, StateDao stateDao) {
         this.voteService = voteService;
         this.voterDao = voterDao;
         this.candidateDao = candidateDao;
         this.electionDao = electionDao;
         this.countyDao = countyDao;
         this.voterChoiceDao = voterChoiceDao;
+        this.stateDao = stateDao;
     }
 
     @GetMapping("/index")
@@ -172,91 +174,14 @@ public class AuthorizationController {
 
     @GetMapping("/election")
     public String electionForm(Model model) {
-        voteService.displayELection("President", model);
-//        Election current = null;
-//        List<Election> election = electionDao.findByIsActive(true);
-//        for (Election e : election) {
-//            if (e.getPosition().equals("President")) {
-//                current = e;
-//            }
-//        }
-//        System.out.println("Election for: " + current);
-//        //model.addAttribute("election", election);
-//        if(current == null) {
-//            return "redirect:/election2";
-//        }
-//
-//        List<Candidate> candidates = current.getCandidates();
-//        //List<Candidate> candidates = voteService.findCandidatesByRole("President");
-//        // Candidate candidates = voteService.findCandidateByName("Joe");
-//
-//        VoterChoice voterChoice = new VoterChoice();
-//        model.addAttribute("voterChoice", voterChoice);
-//
-//        System.out.println(candidates);
-//        model.addAttribute("candidates", candidates);
-
+        voteService.displayELection("President", model, "election1");
         return "election1";
     }
 
 
     @PostMapping("/election/save")
     public String election1(@Valid @ModelAttribute("voterChoice") VoterChoiceDto voterChoiceDto, Principal p, Model model) {
-        VoterChoice voterChoice = new VoterChoice();
-        Voter current = voteService.findVoterByEmail(p.getName());
-        voterChoice.setVoter(current);
-
-        System.out.println("Selected:" + voterChoiceDto.getCandidateOfChoice());
-
-        voterChoice.setDate(LocalDate.now());
-        Candidate selected = candidateDao.findById(voterChoiceDto.getCandidateOfChoice()).orElse(null);
-        voterChoice.setCandidateSelected(selected);
-
-        Election election = electionDao.findElectionByPosition(selected.getRole());
-       //Election election = electionDao.findById(electionDto.getId()).orElse(null);
-        System.out.println("Voting election:" + election);
-        voterChoice.setElection(election);
-
-        List<VoterChoice> allVoterChoices = voterChoiceDao.findAllByVoterId(current.getId());
-        Boolean foundAndUpdated = false;
-        for(VoterChoice choice : allVoterChoices) {
-           System.out.println("Looping through list election id:" + choice.getElection().getId());
-           System.out.println("Current election id:" + election.getId());
-            if(choice.getDate().equals(voterChoice.getDate()) && choice.getElection().equals(election)) {
-                choice.setCandidateSelected(selected);
-                voterChoiceDao.save(choice);
-                foundAndUpdated = true;
-            }
-        }
-        if(!foundAndUpdated) {
-
-            voterChoiceDao.save(voterChoice);
-        }
-//        List<VoterChoice> allChoices = voterChoiceDao.findAllByVoterId(current.getId());
-//        for (VoterChoice choice : allChoices) {
-//        }
-//        VoterChoice voterChoice = new VoterChoice();
-//        String username = p.getName();
-//        System.out.println("Username: " + username);
-//        Voter voter = voteService.findVoterByEmail(username);
-//        voterChoice.setVoter(voter);
-//        voterChoice.setElection(election);
-//        System.out.println("Got to this point");
-//        System.out.println("Voting: " + voter.getFirstName());
-////        if (!voter.isVoted()) {
-////            voter.setVoted(true);
-////            System.out.println(voter.getFirstName() + "Voted successfully");
-//            //Candidate candidate = voteService.getCandidateByName("name");
-////            System.out.println("For candidate: " + candidate);
-//            //Candidate c = voteService.getCandidateByName(name);
-//            CandidateDto candidateDto = new CandidateDto();
-//            Candidate candidate1 = candidateDao.findById(voterChoice.getCandidateSelected().getId());
-//            System.out.println("Selected Candidate: " + candidate1);
-//            voterChoice.setCandidateSelected(candidate);
-//            candidate.setVotes(candidate.getVotes()+1);
-//            String countyName = voter.getCounty().getName();
-//            County county = countyDao.findByName(countyName);
-////
+        voteService.voteElection(voterChoiceDto, p, model);
         return "redirect:/election?success";
 
     }
@@ -271,31 +196,38 @@ public class AuthorizationController {
         return "review";
     }
 
-    @PutMapping("/review/save")
+    @PostMapping("/review/save")
     public String submitReview(Model model, Principal p){
         String username = p.getName();
         Voter voter = voteService.findVoterByEmail(username);
         if(!voter.isVoted()){
             voter.setVoted(true);
         }
-        VoterDto voterDto = new VoterDto();
-        voterDto.setId(voter.getId());
-        voter.setFirstName(voterDto.getFirstName());
-        voterDto.setLastName(voter.getLastName());
-        voterDto.setEmail(voter.getEmail());
-        voterDto.setPhone(voter.getPhone());
-        voterDto.setDob(voter.getDob());
-        voterDto.setGender(voter.getGender());
-        voterDto.setAddress(voter.getAddress());
-        voterDto.setCity(voter.getCity());
-        //voterDto.setState(voter.getState());
-        voterDto.setZip(voter.getZip());
-        //voterDto.setCounty(voter.getCounty());
-        voterDto.setParty(voter.getParty());
-//        System.out.println("going to update voter " + existing.getIdNumber());
-//        System.out.println("voterId: " + voterDto.getId());
-        voteService.saveVoter(voterDto);
-        return "redirect:/review/save?success";
+//        VoterDto voterDto = new VoterDto();
+//        voterDto.setId(voter.getId());
+//        voter.setFirstName(voterDto.getFirstName());
+//        voterDto.setLastName(voter.getLastName());
+//        voterDto.setEmail(voter.getEmail());
+//        voterDto.setPhone(voter.getPhone());
+//        voterDto.setDob(voter.getDob());
+//        voterDto.setGender(voter.getGender());
+//        voterDto.setAddress(voter.getAddress());
+//        voterDto.setCity(voter.getCity());
+//        //voterDto.setState(voter.getState());
+//        voterDto.setZip(voter.getZip());
+//        //voterDto.setCounty(voter.getCounty());
+//        voterDto.setParty(voter.getParty());
+////        System.out.println("going to update voter " + existing.getIdNumber());
+////        System.out.println("voterId: " + voterDto.getId());
+//        voteService.saveVoter(voterDto);
+        System.out.println("Username: " + username+ "voted: " + voter.isVoted());
+        voterDao.save(voter);
+        return "submitted";
+    }
+
+    @GetMapping("/submitted")
+    public String submitted(){
+        return "submitted";
     }
 
     @GetMapping("candidateInfo")
@@ -307,80 +239,24 @@ public class AuthorizationController {
 
     @GetMapping("/election2")
     public String electionForm2(Model model) {
-        Election current = new Election();
-        List<Election> election = electionDao.findByIsActive(true);
-        for (Election e : election) {
-            if (e.getPosition().equals("Senator")) {
-                current = e;
-            }
-        }
-        System.out.println("Election for: " + current);
-        model.addAttribute("election", election);
-
-        List<Candidate> candidates = current.getCandidates();
-        //List<Candidate> candidates = voteService.findCandidatesByRole("President");
-        // Candidate candidates = voteService.findCandidateByName("Joe");
-
-        System.out.println(candidates);
-        model.addAttribute("candidates", candidates);
-
+        voteService.displayELection("Senator", model, "election2");
         return "election2";
     }
 
 
     @PostMapping("/election2/save")
-    public String election2(Model model, Election election, Principal p, Candidate candidate) {
-        VoterChoice voterChoice = new VoterChoice();
-        String username = p.getName();
-        System.out.println("Username: " + username);
-        Voter voter = voteService.findVoterByEmail(username);
-        voterChoice.setVoter(voter);
-        voterChoice.setElection(election);
-        System.out.println("Got to this point");
-        System.out.println("Voting: " + voter.getFirstName());
-        if (!voter.isVoted()) {
-            voter.setVoted(true);
-            System.out.println(voter.getFirstName() + "Voted successfully");
-            //Candidate candidate = voteService.getCandidateByName("name");
-            System.out.println("For candidate: " + candidate);
-            //Candidate c = voteService.getCandidateByName(name);
-            CandidateDto candidateDto = new CandidateDto();
-            Candidate candidate1 = voteService.findCandidateByName("name");
-            System.out.println("Selected Candidate: " + candidate1);
-            //voterChoice.setCandidateSelected(candidate);
-            candidate.setVotes(candidate.getVotes()+1);
-            voteService.saveVoterChoice(voterChoice);
-            candidateDao.save(candidate);
-
-            voterDao.save(voter);
-        }
+    public String election2(@Valid @ModelAttribute("voterChoice") VoterChoiceDto voterChoiceDto, Principal p, Model model) {
+        voteService.voteElection(voterChoiceDto, p, model);
         return "redirect:/election2?success";
 
     }
 
     @GetMapping("/viewResults")
     public String viewResults(Model model) {
-        List<VoterChoice> voterChoices = voteService.findAllVoterChoices();
-        List<Candidate> candidates = candidateDao.findAll();
-        List<County> counties = countyDao.findAll();
+        voteService.displayElectionResults(model);
+        return "viewResults"; // Thymeleaf template to display results
 
-        model.addAttribute("candidates", candidates);
-        model.addAttribute("voterChoices", voterChoices);
-        model.addAttribute("counties", counties);
-
-        List<Long> countyVotes = new ArrayList<>();
-
-        Map<Candidate, Long> votesForCandidate= new HashMap<>();
-        for( County county : counties){
-            for(Candidate candidate : county.getCandidates()) {
-                votesForCandidate.put(candidate, voteService.getVotesByCandidate(candidate.getName()));
-            }
-        }
-        model.addAttribute("countyVotes", votesForCandidate);
-
-
-
-        return "viewResults";
+        //return "viewResults";
     }
 
     @GetMapping("/search-election")

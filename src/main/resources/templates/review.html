@@ -8,6 +8,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet"  href="/static/css/style.css" th:href="@{/css/style.css}">
 </head>
+<style>
+    table.table-evenodd tr:hover:nth-child(odd){
+        background: lightgrey;
+    }
+    table.table-evenodd tr:hover:nth-child(even){
+        background: lightcyan;
+    }
+</style>
 <body>
 <div id="logo">Use your voice</div>
 <nav id="menu">
@@ -25,9 +33,9 @@
             >Elections</a>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="election">Election</a></li>
-                <li><a class="dropdown-item" href="election2.html">Election</a></li>
+                <li><a class="dropdown-item" href="election2">Election</a></li>
                 <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="candidateInfo.html">Information about Candidates</a></li>
+                <li><a class="dropdown-item" href="candidateInfo">Information about Candidates</a></li>
             </ul>
         </li>
         <li class="nav-item">
@@ -39,7 +47,7 @@
     </ul>
 </nav>
 <div th:if="${param.success}">
-    <div class="alert alert-info">You've successfully updated your information!</div>
+    <div class="alert alert-info">You've successfully updated your choices!</div>
 </div>
 <div>
     <h2>Please review your selections</h2>
@@ -62,13 +70,17 @@
 
 
     </table>
-    <button class="btn btn-primary" type="submit" id="">Submit</button>
+    <button class="btn btn-primary" type="submit" id="finished">Submit</button>
 </div>
 
 <script>
     document.getElementById('back-to-election')
         .addEventListener('click', function () {
             window.location.href = 'election';
+        });
+    document.getElementById('finished')
+        .addEventListener('click', function () {
+            window.location.href = 'submitted';
         });
 </script>
 

@@ -45,24 +45,32 @@
 </div>
 
 
-<form method="post" role="form" th:action="@{/election2/save}" th:object="${candidates}">
+<form method="post" role="form" th:action="@{/election/save}" th:object="${voterChoice}">
+    <!--    <input type="hidden" th:field="*{id}" />-->
     <h2 class="text-center">Select Candidate</h2>
-    <h2 class="text-center">Senator</h2>
+    <h2 class="text-center" >Senator</h2>
     <div>
-        <ul>
-            <li th:each="c : ${candidates}">
+        <div th:each="c : ${candidates}">
+            <div id="display-candidate">
                 <input type="radio"
-                       th:field="${candidates}"
-                       th:value="${c.name}" >
-                <label th:for="${name}" th:text="${c.name}" th:href="@{/candidate-info}" target="_blank"></label><br>
-                <!--        </li>-->
-                <!--    </ul>-->
-                <!--            <input type="radio" th:field="${c}" th:value="${c.id}">-->
-                <!--            <label th:for="${c.id}" th:text="${c.name}"></label><br>-->
-            </li>
-        </ul>
+
+                       th:field="*{candidateOfChoice}"
+                       th:value="${c.id}" />
+
+                <label>
+                    <!--                    <span th:for="${c.id}" th:text="${c.name}" th:href="@{/candidates-info}" target="_blank"></span><br>-->
+                    <a th:text="${c.name}" th:href="@{/candidateInfo}" target="_blank"></a><br>
+                    <span th:text="${c.party}"></span>
+                </label>
+            </div>
+        </div>
+        <!--        </li>-->
+        <!--    </ul>-->
+        <!--            <input type="radio" th:field="${c}" th:value="${c.id}">-->
+        <!--            <label th:for="${c.id}" th:text="${c.name}"></label><br>-->
         <button class="btn btn-primary" type="reset" value="Reset">Reset</button>
         <button class="btn btn-primary" type="submit" value="Submit" th:href="@{/review}">Next</button>
+
     </div>
 
 </form>

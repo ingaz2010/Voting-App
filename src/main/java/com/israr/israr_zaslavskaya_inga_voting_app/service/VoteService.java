@@ -2,12 +2,15 @@ package com.israr.israr_zaslavskaya_inga_voting_app.service;
 
 import com.israr.israr_zaslavskaya_inga_voting_app.dto.CandidateDto;
 import com.israr.israr_zaslavskaya_inga_voting_app.dto.ElectionDto;
+import com.israr.israr_zaslavskaya_inga_voting_app.dto.VoterChoiceDto;
 import com.israr.israr_zaslavskaya_inga_voting_app.dto.VoterDto;
 import com.israr.israr_zaslavskaya_inga_voting_app.model.*;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.security.Principal;
 import java.util.List;
@@ -65,7 +68,11 @@ public interface VoteService {
 
     Election findElectionById(Long id);
 
-    String displayELection(String string, Model model);
+    String displayELection(String string, Model model, String toReturn);
+
+    void voteElection(VoterChoiceDto voterChoiceDto, Principal p, Model model);
+
+    void displayElectionResults(Model model);
 
     //void findOrCandidate(CandidateDto candidateDto);
 }
