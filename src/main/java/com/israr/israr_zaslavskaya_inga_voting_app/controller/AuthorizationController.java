@@ -20,6 +20,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @Slf4j
@@ -292,5 +293,24 @@ public class AuthorizationController {
         return "redirect:/update-election?success";
     }
 
+    @GetMapping("/search-candidates")
+    public String viewCandidates(Model model) {
+        List<Candidate> candidates = voteService.findAllCandidates();
+        model.addAttribute("candidates", candidates);
+        return "search-candidates";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteCandidate(@PathVariable Long id, Model model) {
+        Boolean deleted = voteService.deleteCandidateById(id);
+        if(deleted){
+            model.addAttribute("successMessage", "Item deleted successfully.");
+            log.info("Deleting candidate with ID={}", id);
+        } else {
+           // redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete item.");
+        }
+
+        return "redirect:/search-candidates?success";
+    }
 
 }

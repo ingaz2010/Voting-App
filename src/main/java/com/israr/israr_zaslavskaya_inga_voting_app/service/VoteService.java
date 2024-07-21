@@ -20,17 +20,17 @@ public interface VoteService {
 
     void saveVoter(VoterDto voterDto);
 
-    void saveCandidate(CandidateDto candidateDto);
+    //void saveCandidate(CandidateDto candidateDto);
 
     //void saveVoter(VoterDto voterDto);
     //void saveCandidate(CandidateDto candidateDto);
-    Voter findVoterByIdNumber(String idNumber);
+    //Voter findVoterByIdNumber(String idNumber);
 
     Voter findVoterByEmail(String email);
 
     Candidate findCandidateByName(String name);
 
-    List<Candidate> findCandidatesByRole(String candidateRole);
+    //List<Candidate> findCandidatesByRole(String candidateRole);
 
     // void saveElection(ElectionDto election);
 
@@ -38,17 +38,17 @@ public interface VoteService {
 
     void vote(Long id, HttpSession session);
 
-    Candidate getCandidateByName(String name);
+    //Candidate getCandidateByName(String name);
 
-    Voter findVoterById(Long voterId);
+   // Voter findVoterById(Long voterId);
 
-    void saveVoterChoice(VoterChoice voterChoice);
+    //void saveVoterChoice(VoterChoice voterChoice);
 
     List<VoterChoice> findVoterChoicesByVoterEmail(String username);
 
     List<VoterChoice> findAllVoterChoices();
 
-    Long getVotesByCandidate(String name);
+   // Long getVotesByCandidate(String name);
 
     Election findActiveElectionByPosition(String electionName);
 
@@ -73,6 +73,10 @@ public interface VoteService {
     void voteElection(VoterChoiceDto voterChoiceDto, Principal p, Model model);
 
     void displayElectionResults(Model model);
+
+    List<Candidate> findAllCandidates();
+
+    Boolean deleteCandidateById(Long id);
 
     //void findOrCandidate(CandidateDto candidateDto);
 }

@@ -69,24 +69,24 @@ public class VoteServiceImpl implements VoteService{
         voterDao.save(voter);
     }
 
-    @Override
-    public void saveCandidate(CandidateDto candidateDto) {
-        Candidate candidate = new Candidate();
-        candidate.setId(candidateDto.getId());
-        candidate.setName(candidateDto.getName());
-        candidate.setRole(candidateDto.getRole());
-        candidate.setParty(candidateDto.getParty());
-        candidate.setDescription(candidateDto.getDescription());
-        if(findCandidateByName(candidateDto.getName()) == null) {
-            candidateDao.save(candidate);
-        }
+//    @Override
+//    public void saveCandidate(CandidateDto candidateDto) {
+//        Candidate candidate = new Candidate();
+//        candidate.setId(candidateDto.getId());
+//        candidate.setName(candidateDto.getName());
+//        candidate.setRole(candidateDto.getRole());
+//        candidate.setParty(candidateDto.getParty());
+//        candidate.setDescription(candidateDto.getDescription());
+//        if(findCandidateByName(candidateDto.getName()) == null) {
+//            candidateDao.save(candidate);
+//        }
+//
+//    }
 
-    }
-
-    @Override
-    public Voter findVoterByIdNumber(String idNumber) {
-        return voterDao.findByIdNumber(idNumber);
-    }
+//    @Override
+//    public Voter findVoterByIdNumber(String idNumber) {
+//        return voterDao.findByIdNumber(idNumber);
+//    }
 
     @Override
     public Voter findVoterByEmail(String email) {
@@ -104,11 +104,11 @@ public class VoteServiceImpl implements VoteService{
         return null;
     }
 
-    @Override
-    public List<Candidate> findCandidatesByRole(String candidateRole) {
-        List<Candidate> candidates = candidateDao.findByRole(candidateRole);
-        return candidates;
-    }
+//    @Override
+//    public List<Candidate> findCandidatesByRole(String candidateRole) {
+//        List<Candidate> candidates = candidateDao.findByRole(candidateRole);
+//        return candidates;
+//    }
 
     @Override
     public void saveElection(ElectionDto electiondto) {
@@ -131,20 +131,20 @@ public class VoteServiceImpl implements VoteService{
         }
     }
 
-    @Override
-    public Candidate getCandidateByName(String name) {
-        return candidateDao.findByName(name);
-    }
-
-    @Override
-    public Voter findVoterById(Long voterId) {
-        return voterDao.findById(voterId).orElseThrow(() -> new NoSuchElementException("Not Found"));
-    }
-
-    @Override
-    public void saveVoterChoice(VoterChoice voterChoice) {
-        voterChoiceDao.save(voterChoice);
-    }
+//    @Override
+//    public Candidate getCandidateByName(String name) {
+//        return candidateDao.findByName(name);
+//    }
+//
+//    @Override
+//    public Voter findVoterById(Long voterId) {
+//        return voterDao.findById(voterId).orElseThrow(() -> new NoSuchElementException("Not Found"));
+//    }
+//
+//    @Override
+//    public void saveVoterChoice(VoterChoice voterChoice) {
+//        voterChoiceDao.save(voterChoice);
+//    }
 
     @Override
     public List<VoterChoice> findVoterChoicesByVoterEmail(String username) {
@@ -165,19 +165,19 @@ public class VoteServiceImpl implements VoteService{
         return voterChoiceDao.findAll();
     }
 
-    @Override
-    public Long getVotesByCandidate(String name) {
-        Candidate candidate = candidateDao.findByName(name);
-        List<VoterChoice> votedForCandidate= new ArrayList<>();
-        List<VoterChoice> allVoterChoices = voterChoiceDao.findAll();
-//        for (VoterChoice voterChoice : allVoterChoices) {
-//            if(voterChoice.getCandidateSelected().getId() == candidate.getId()){
-//                votedForCandidate.add(voterChoice);
-//            }
-//        }
-        //Long count = voterChoiceDao.countByCandidate(candidate);
-        return (long) votedForCandidate.size();
-    }
+//    @Override
+//    public Long getVotesByCandidate(String name) {
+//        Candidate candidate = candidateDao.findByName(name);
+//        List<VoterChoice> votedForCandidate= new ArrayList<>();
+//        List<VoterChoice> allVoterChoices = voterChoiceDao.findAll();
+////        for (VoterChoice voterChoice : allVoterChoices) {
+////            if(voterChoice.getCandidateSelected().getId() == candidate.getId()){
+////                votedForCandidate.add(voterChoice);
+////            }
+////        }
+//        //Long count = voterChoiceDao.countByCandidate(candidate);
+//        return (long) votedForCandidate.size();
+//    }
 
     @Override
     public Election findActiveElectionByPosition(String electionName) {
@@ -263,6 +263,24 @@ public class VoteServiceImpl implements VoteService{
         if (search == null) {
            Voter voter = new Voter();
            convertDtoToVoter(voterdto, voter);
+
+            String roleName;
+            if(voterdto.isAdminRegistration()){
+                roleName = "ROLE_ADMIN";
+            } else{
+                roleName = "ROLE_USER";
+            }
+
+            //check if role already exists in database, otherwise create it
+            Role role = roleDao.findByName(roleName);
+            if(role == null){
+                role = new Role();
+                role.setName(roleName);
+                roleDao.save(role);
+            }
+
+            //Assign the role to the user
+            voter.setRoles(Collections.singletonList(role));
 
            County county = countyDao.findByName(voterdto.getCounty());
            if (county == null) {
@@ -432,6 +450,18 @@ public class VoteServiceImpl implements VoteService{
         }
 
         model.addAttribute("results", results);
+    }
+
+    @Override
+    public List<Candidate> findAllCandidates() {
+        return candidateDao.findAll();
+    }
+
+    @Override
+    public Boolean deleteCandidateById(Long id) {
+        candidateDao.deleteById(id);
+        Candidate candidate = candidateDao.findById(id).orElse(null);
+        return candidate != null;
     }
 
 

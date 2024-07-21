@@ -46,7 +46,7 @@ public class VoterDto {
     private boolean voted = false;
 
     public boolean isAdminRegistration(){
-        return email.endsWith("@admin.com");
+        return email.endsWith(("@admin.com"));
     }
 }
 
