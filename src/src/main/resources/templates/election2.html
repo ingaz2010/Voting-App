@@ -1,0 +1,78 @@
+!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <title>Election 1</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet"  href="/static/css/style.css" th:href="@{/static/css/style.css}">
+</head>
+<body>
+<div id="logo">Use your voice</div>
+<nav id="menu">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="index">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a
+                    class="nav-link dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    href="#"
+                    role="button"
+                    aria-expanded="false"
+            >Elections</a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="election">Election 1</a></li>
+                <li><a class="dropdown-item" href="election2">Election</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="candidateInfo-image">Information about Candidates</a></li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="review">Review</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="confirmInfo">Account Information</a>
+        </li>
+    </ul>
+</nav>
+
+<div th:if="${param.success}">
+    <div class="alert alert-info">Your choice is saved</div>
+</div>
+
+
+<form method="post" role="form" th:action="@{/election/save}" th:object="${voterChoice}">
+    <!--    <input type="hidden" th:field="*{id}" />-->
+    <h2 class="text-center">Select Candidate</h2>
+    <h2 class="text-center" >Senator</h2>
+    <div>
+        <div th:each="c : ${candidates}">
+            <div id="display-candidate">
+                <input type="radio"
+
+                       th:field="*{candidateOfChoice}"
+                       th:value="${c.id}" />
+
+                <label>
+                    <!--                    <span th:for="${c.id}" th:text="${c.name}" th:href="@{/candidates-info}" target="_blank"></span><br>-->
+                    <a th:text="${c.name}" th:href="@{/candidateInfo}" target="_blank"></a><br>
+                    <span th:text="${c.party}"></span>
+                </label>
+            </div>
+        </div>
+        <!--        </li>-->
+        <!--    </ul>-->
+        <!--            <input type="radio" th:field="${c}" th:value="${c.id}">-->
+        <!--            <label th:for="${c.id}" th:text="${c.name}"></label><br>-->
+        <button class="btn btn-primary" type="reset" value="Reset">Reset</button>
+        <button class="btn btn-primary" type="submit" value="Submit" th:href="@{/review}">Next</button>
+
+    </div>
+
+</form>
+</body>
+</html>

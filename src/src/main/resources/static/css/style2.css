@@ -1,0 +1,88 @@
+
+.frame{
+    border: darkblue 7px solid;
+    margin: 40px;
+    margin-top: 5px;
+    padding: 100px;
+
+}#logo{
+
+     font-family: "Lucida Handwriting";
+     font-size: xxx-large;
+     color: firebrick;
+     width: 450px;
+     text-align: center;
+     margin-left: 40px;
+ }
+nav{
+    display: block;
+    background-color: lightgrey;
+}
+#starter-menu{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.admin-menu-item{
+    border: 2px solid;
+    width: 350px;
+    height: 100px;
+    text-align: center;
+    background-size: 350px;
+    border-radius: 15px;
+    box-shadow:  15px 15px 15px grey;
+    background-color: antiquewhite;
+
+    /* transition in size when hovered over */
+    transition-property: width, height;
+    transition-duration: 0.1s;
+}
+.admin-menu-item:hover{
+    width:375px;
+    height:115px;
+}
+#section1{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.voter-menu-item{
+    border: 2px solid;
+    width: 350px;
+    height: 350px;
+    text-align: center;
+    background-size: 350px;
+    border-radius: 15px;
+    box-shadow: 15px 15px 15px 15px grey;
+
+    /* transition in size when hovered over */
+    transition-property: width, height;
+    transition-duration: 0.1s;
+}
+.voter-menu-item:hover{
+    width:375px;
+    heigh: 375px;
+}
+#user-starter-menu{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+#section1{
+    display:flex;
+    justify-content: space-evenly;
+}
+#candidate-info{
+    margin: auto;
+}
+.welcome{
+    text-align: center;
+    font-size: xxx-large;
+}
+#go-to-ballot{
+    background-image: url("/static/images/vote.jpg");
+}
+img{
+    float: right;
+    padding-right: 100px;
+}
