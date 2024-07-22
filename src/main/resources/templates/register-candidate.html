@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
-    <link rel="stylesheet"  href="/static/css/style.css" th:href="@{/css/style.css}">
+    <link rel="stylesheet"  href="/static/css/style.css" th:href="@{/static/css/style.css}">
     <!--    <link rel="stylesheet" th:href="@{/css/style.css}">-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -31,7 +31,7 @@
                 <li><a class="dropdown-item" href="election">Election</a></li>
                 <li><a class="dropdown-item" href="election2">Election</a></li>
                 <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="candidateInfo">Information about Candidates</a></li>
+                <li><a class="dropdown-item" href="candidateInfo-image">Information about Candidates</a></li>
             </ul>
         </li>
         <li class="nav-item">
@@ -109,6 +109,15 @@
                            th:if="${#fields.hasErrors('description')}">
                         </p>
                     </div>
+
+<!--                    <div class="form-group mb-3">-->
+<!--                        <label class="form-label">States Running For</label><br/>-->
+<!--                        <div th:each="state : ${states}">-->
+<!--                            <input type="checkbox" th:id="'state' + ${state.id}" th:name="'states'" th:value="${state.id}"-->
+<!--                                   th:checked="${candidate.states.contains(state)}"/>-->
+<!--                            <label th:for="'state' + ${state.id}" th:text="${state.name}"></label><br/>-->
+<!--                        </div>-->
+<!--                    </div>-->
 
 <!--                    <div class="col-sm-3">-->
 <!--                        <form method="post" action="/upload" enctype="multipart/form-data">-->

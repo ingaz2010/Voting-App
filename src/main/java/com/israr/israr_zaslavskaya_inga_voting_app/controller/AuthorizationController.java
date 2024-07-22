@@ -7,6 +7,7 @@ import com.israr.israr_zaslavskaya_inga_voting_app.dto.VoterChoiceDto;
 import com.israr.israr_zaslavskaya_inga_voting_app.dto.VoterDto;
 import com.israr.israr_zaslavskaya_inga_voting_app.model.*;
 import com.israr.israr_zaslavskaya_inga_voting_app.service.VoteService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +16,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.*;
+
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -85,11 +89,13 @@ public class AuthorizationController {
         return "confirmInfo";
     }
 
-    @PutMapping("/confirmInfo/save")
+    @PostMapping("/confirmInfo/save")
     public String confirmAndSaveVoterChanges( Model model, @Valid @ModelAttribute("voter") VoterDto voterDto, Principal p){
         String username = p.getName();
+
         Voter existing = voteService.findVoterByEmail(username);
-        voterDto.setId(voterDto.getId());
+        System.out.println("Updating " +existing);
+        //voterDto.setId(voterDto.getId());
 
         System.out.println("going to update voter " + voterDto.getId());
 
@@ -98,21 +104,23 @@ public class AuthorizationController {
         return "redirect:/confirmInfo?success";
     }
 
-    @GetMapping("/register-candidate")
+    @GetMapping("/register-candidate-image")
     public String registerCandidateForm(Model model) {
         CandidateDto candidate = new CandidateDto();
+        List<State> states = stateDao.findAll();
         model.addAttribute("candidate", candidate);
-        return "register-candidate";
+        model.addAttribute("states", states);
+        return "register-candidate-image";
     }
 
-    @PostMapping("/register-candidate/save")
-    public String registerCandidate(@Valid @ModelAttribute("candidate") CandidateDto candidate, BindingResult bindingResult, Model model) {
-       voteService.findOrCreateCandidate(candidate, bindingResult, model);
+    @PostMapping("/register-candidate-image/save")
+    public String registerCandidate(@Valid @ModelAttribute("candidate") CandidateDto candidate, @RequestParam("imageFile") MultipartFile imageFile, BindingResult bindingResult, Model model) throws IOException {
+       voteService.findOrCreateCandidate(candidate, imageFile, bindingResult, model);
         if (bindingResult.hasErrors()) {
             model.addAttribute("candidate", candidate);
-            return "redirect:/register-candidate";
+            return "redirect:/register-candidate-image";
         }
-        return "redirect:/register-candidate?success";
+        return "redirect:/register-candidate-image?success";
     }
 
     @GetMapping("/set-election")
@@ -158,19 +166,6 @@ public class AuthorizationController {
             // Optionally handle and return a specific error page
             return "redirect:/main-menu";
         }
-//        Election existing = null;
-//        List<Election> elections = electionDao.findByIsActive(election.getIsActive());
-//        for (Election e : elections) {
-//            if (e.getPosition() == election.getPosition()) {
-//                existing = e;
-//            }
-//        }
-//        if (existing != null) {
-//            bindingResult.rejectValue("name", null, "This section of the ballot already exists");
-//        }
-//
-//        voteService.saveElection(election);
-//        return "redirect:/set-election?success";
     }
 
     @GetMapping("/election")
@@ -194,16 +189,20 @@ public class AuthorizationController {
         Voter voter = voteService.findVoterByEmail(username);
         List<VoterChoice> selected = voteService.findVoterChoicesByVoterEmail(username);
         model.addAttribute("selected", selected);
+        System.out.println("Voter status: " + voter.isVoted());
         return "review";
     }
 
+    @Transactional
     @PostMapping("/review/save")
     public String submitReview(Model model, Principal p){
         String username = p.getName();
         Voter voter = voteService.findVoterByEmail(username);
+        System.out.println("Voter submitted ballot: " + voter.isVoted());
         if(!voter.isVoted()){
             voter.setVoted(true);
         }
+        System.out.println("Voter submitted ballot: " + voter.isVoted());
 //        VoterDto voterDto = new VoterDto();
 //        voterDto.setId(voter.getId());
 //        voter.setFirstName(voterDto.getFirstName());
@@ -223,7 +222,8 @@ public class AuthorizationController {
 //        voteService.saveVoter(voterDto);
         System.out.println("Username: " + username+ "voted: " + voter.isVoted());
         voterDao.save(voter);
-        return "submitted";
+//        return "submitted";
+        return "redirect:/submitted";
     }
 
     @GetMapping("/submitted")
@@ -231,7 +231,7 @@ public class AuthorizationController {
         return "submitted";
     }
 
-    @GetMapping("candidateInfo")
+    @GetMapping("candidates-info-image")
     public String viewCandidatesInfo(Model model){
         List<Candidate> candidates = candidateDao.findAll();
         model.addAttribute("candidates", candidates);
@@ -274,7 +274,7 @@ public class AuthorizationController {
         return "update-election";
     }
 
-    @PutMapping("/update-election/save/{id}")
+    @PostMapping("/update-election/save/{id}")
     public String updateElection(@PathVariable Long id, @ModelAttribute("election") ElectionDto electionDto, BindingResult bindingResult, Model model){
         Election existing = voteService.findElectionById(id);
         if (bindingResult.hasErrors()) {
@@ -283,14 +283,14 @@ public class AuthorizationController {
             return "update-election"; // Return to the form with validation errors
         }
         if(existing == null){
-            return "redirect:/update-election?error";
+            return "redirect:/update-election/{id}?error";
         }
         //existing.setId(id);
         existing.setPosition(electionDto.getPosition());
         existing.setIsActive(electionDto.getIsActive());
         existing.setYear(electionDto.getYear());
         voteService.saveELection(existing);
-        return "redirect:/update-election?success";
+        return "redirect:/update-election/{id}?success";
     }
 
     @GetMapping("/search-candidates")
@@ -300,7 +300,16 @@ public class AuthorizationController {
         return "search-candidates";
     }
 
-    @DeleteMapping("/{id}")
+    @GetMapping("search-candidates/{id}")
+    public String viewCandidateToDelete(@PathVariable Long id, Model model) {
+        Candidate candidate = candidateDao.findById(id).orElse(null);
+        if (candidate != null) {
+            model.addAttribute("candidate", candidate);
+        }
+        return "delete";
+    }
+
+    @PostMapping("/candidate/{id}/delete")
     public String deleteCandidate(@PathVariable Long id, Model model) {
         Boolean deleted = voteService.deleteCandidateById(id);
         if(deleted){
@@ -310,7 +319,7 @@ public class AuthorizationController {
            // redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete item.");
         }
 
-        return "redirect:/search-candidates?success";
+        return "redirect:/search-candidates/{id}?success";
     }
 
 }

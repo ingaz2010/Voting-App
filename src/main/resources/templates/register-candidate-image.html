@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
-    <link rel="stylesheet"  href="/static/css/style.css" th:href="@{/css/style.css}">
+    <link rel="stylesheet"  href="/static/css/style.css" th:href="@{/static/css/style.css}">
     <!--    <link rel="stylesheet" th:href="@{/css/style.css}">-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -31,7 +31,7 @@
                 <li><a class="dropdown-item" href="election">Election</a></li>
                 <li><a class="dropdown-item" href="election2">Election</a></li>
                 <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="candidateInfo">Information about Candidates</a></li>
+                <li><a class="dropdown-item" href="candidateInfo-image">Information about Candidates</a></li>
             </ul>
         </li>
         <li class="nav-item">
@@ -110,13 +110,39 @@
                         </p>
                     </div>
 
-                    <!-- File upload field -->
-                    <div class="form-group">
-                        <label for="file">Select Image:</label>
-                        <input type="file" id="file" name="file" accept=".jpg, .png, .gif" required>
+<!--                    &lt;!&ndash; States checkboxes &ndash;&gt;-->
+<!--                    <div class="form-group mb-3">-->
+<!--                        <label class="form-label">States Running For</label><br/>-->
+<!--                        <div th:each="state : ${states}">-->
+<!--                            <input type="checkbox" th:id="'state' + ${state.id}" th:name="'states'" th:value="${state.id}"-->
+<!--                                   th:checked="${state.isSelected}"/>-->
+<!--                            <label th:for="'state' + ${state.id}" th:text="${state.stateName}"></label><br/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+                    <!-- States checkboxes -->
+                    <div class="form-group mb-3">
+                        <label class="form-label">States Running For</label><br/>
+                        <div th:each="state : ${states}">
+                            <input type="checkbox"
+                                   th:id="'state' + ${state.id}"
+                                   th:name="'states'"
+                                   th:value="${state.id}"
+                                   th:checked="${state.isSelected}" />
+                            <label th:for="'state' + ${state.id}" th:text="${state.stateName}"></label><br/>
+                        </div>
                     </div>
 
-<!--                    <form method="post" action="/upload" enctype="multipart/form-data">-->
+                    <!-- File upload field for Candidate Image -->
+                    <div class="form-group mb-3">
+                        <label class="form-label">Upload Image</label>
+                        <input type="file" name="imageFile" accept="image/*">
+                    </div>
+
+
+
+
+                    <!--                    <form method="post" action="/upload" enctype="multipart/form-data">-->
 <!--                        <div class="form-group">-->
 <!--                            <label for="file">Select File to Upload:</label>-->
 <!--                            <input type="file" id="file" name="file" accept=".jpg, .png, .gif">-->

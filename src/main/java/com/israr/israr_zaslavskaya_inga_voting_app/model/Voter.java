@@ -26,7 +26,7 @@ public class Voter {
 
     @Column(nullable = false, unique = true)
     private String idNumber;
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String ssn;
     @Column(nullable = false)
     private String dob;

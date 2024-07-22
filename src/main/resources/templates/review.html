@@ -6,7 +6,7 @@
     <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
     <title>Review</title>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet"  href="/static/css/style.css" th:href="@{/css/style.css}">
+    <link rel="stylesheet"  href="/static/css/style.css" th:href="@{/static/css/style.css}">
 </head>
 <style>
     table.table-evenodd tr:hover:nth-child(odd){
@@ -21,7 +21,7 @@
 <nav id="menu">
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="index1.html">Home</a>
+            <a class="nav-link active" aria-current="page" href="main-menu">Home</a>
         </li>
         <li class="nav-item dropdown">
             <a
@@ -35,7 +35,7 @@
                 <li><a class="dropdown-item" href="election">Election</a></li>
                 <li><a class="dropdown-item" href="election2">Election</a></li>
                 <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="candidateInfo">Information about Candidates</a></li>
+                <li><a class="dropdown-item" href="candidateInfo-image">Information about Candidates</a></li>
             </ul>
         </li>
         <li class="nav-item">
@@ -50,8 +50,9 @@
     <div class="alert alert-info">You've successfully updated your choices!</div>
 </div>
 <div>
+    <form id="reviewForm" method="post" th:action="@{/review/save}">
     <h2>Please review your selections</h2>
-    <table id="reviewSelections" class="table table-striped table-bordered" role="form" th:action="@{/review/save}" th:object="${selected}">
+    <table id="reviewSelections" class="table table-striped table-bordered">
         <thead><tr>
             <th scope="col">Position</th>
             <th scope="col">Selected Candidate</th>

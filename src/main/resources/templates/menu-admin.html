@@ -5,14 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Use your voice</title>
-    <!--    <link rel="stylesheet" href="/static/css/style.css">-->
-    <link rel="stylesheet"  href="/static/css/style2.css" th:href="@{/css/style2.css}">
-    <!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"-->
-    <!--          rel="stylesheet"-->
-    <!--          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"-->
-    <!--          crossorigin="anonymous">-->
-    <script src="/js/index.js"></script>
-    <script th:src="@{/js/index.js}"></script>
+    <link rel="stylesheet"  href="/static/css/style2.css" th:href="@{/static/css/style2.css}">
+    <script th:src="@{/static/js/index.js}" src="/static/js/index.js"></script>
+
 
     <style>
         body{
@@ -47,48 +42,48 @@
     </div>
 
     <br><br>
-    <img src="/static/images/tenor.gif" th:src="@{/images/example.jpg}"alt="cat typing" width="500">
+    <img src="/static/images/tenor.gif" th:src="@{/static/images/tenor.gif}" alt="cat typing" width="500px">
 
     <div id="admin-menu">
-        <div id="create-election" class="admin-menu-item" style="background-image: url(/images/flag2.jpg)" >
+        <div id="create-election" class="admin-menu-item" style="background-image: url('/static/images/flag2.jpg')" >
             <h2>Enter Election Information</h2>
         </div>
-        <div id="update-election" class="admin-menu-item" style="background-image: url(/images/image.jpg)">
+        <div id="update-election" class="admin-menu-item" style="background-image: url('/static/images/image.jpg')">
             <h2> Update Election Information </h2>
         </div>
-        <div id="create-candidate" class="admin-menu-item" style="background-image: url(/images/image.jpg)">
+        <div id="create-candidate" class="admin-menu-item" style="background-image: url('/static/images/signup.jpg')">
             <h2> Enter Candidate Information </h2>
         </div>
-        <div id="results" class="admin-menu-item" style="background-image: url(/images/image.jpg)">
+        <div id="results" class="admin-menu-item" style="background-image: url('/static/images/flag2.jpg')">
             <h2> View Results </h2>
         </div>
-        <div id="update-profile" class="admin-menu-item" style="background-image: url(/images/image.jpg)">
+        <div id="update-profile" class="admin-menu-item" style="background-image: url('/static/images/vote.jpg')">
             <h2> Update Profile </h2>
         </div>
     </div>
 </div>
-<script>
-    document.getElementById('create-election')
-        .addEventListener('click', function () {
-            window.location.href = 'set-election';
-        });
-    document.getElementById('update-election')
-        .addEventListener('click', function () {
-            window.location.href = 'search-election';
-        });
-    document.getElementById('create-candidate')
-        .addEventListener('click', function () {
-            window.location.href = 'register-candidate';
-        });
-    document.getElementById('results')
-        .addEventListener('click', function () {
-            window.location.href = 'viewResults';
-        });
-    document.getElementById('update-profile')
-        .addEventListener('click', function () {
-            window.location.href = 'confirmInfo';
-        });
+<!--<script>-->
+<!--    document.getElementById('create-election')-->
+<!--        .addEventListener('click', function () {-->
+<!--            window.location.href = 'set-election';-->
+<!--        });-->
+<!--    document.getElementById('update-election')-->
+<!--        .addEventListener('click', function () {-->
+<!--            window.location.href = 'search-election';-->
+<!--        });-->
+<!--    document.getElementById('create-candidate')-->
+<!--        .addEventListener('click', function () {-->
+<!--            window.location.href = 'register-candidate';-->
+<!--        });-->
+<!--    document.getElementById('results')-->
+<!--        .addEventListener('click', function () {-->
+<!--            window.location.href = 'viewResults';-->
+<!--        });-->
+<!--    document.getElementById('update-profile')-->
+<!--        .addEventListener('click', function () {-->
+<!--            window.location.href = 'confirmInfo';-->
+<!--        });-->
 
-</script>
+<!--</script>-->
 </body>
 </html>

@@ -14,7 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.Year;
@@ -197,7 +199,7 @@ public class VoteServiceImpl implements VoteService{
         }
 
         @Override
-        public void findOrCreateCandidate (CandidateDto candidate, BindingResult bindingResult, Model model){
+        public void findOrCreateCandidate (CandidateDto candidate, MultipartFile imageFile, BindingResult bindingResult, Model model) throws IOException {
             Candidate existing = findCandidateByName(candidate.getName());
             if (existing != null) {
                 bindingResult.rejectValue("name", null, "Candidate with this Name already exists");
@@ -207,6 +209,13 @@ public class VoteServiceImpl implements VoteService{
                 existing.setRole(candidate.getRole());
                 existing.setParty(candidate.getParty());
                 existing.setDescription(candidate.getDescription());
+                existing.setImage(imageFile.getBytes());
+
+                //List of States to be done
+
+                //image
+
+
 
             }
 //        if (bindingResult.hasErrors()) {

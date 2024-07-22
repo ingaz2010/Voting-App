@@ -6,7 +6,7 @@
     <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
     <title>Confirm Information</title>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet"  href="/static/css/style.css" th:href="@{/css/style.css}">
+    <link rel="stylesheet"  href="/static/css/style.css" th:href="@{/static/css/style.css}">
 </head>
 <body>
 <div id="logo">Use your voice</div>
@@ -27,7 +27,7 @@
                 <li><a class="dropdown-item" href="election">Election</a></li>
                 <li><a class="dropdown-item" href="election2">Election</a></li>
                 <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="candidateInfo">Information about Candidates</a></li>
+                <li><a class="dropdown-item" href="candidateInfo-image">Information about Candidates</a></li>
             </ul>
         </li>
         <li class="nav-item">
@@ -42,8 +42,11 @@
 <div th:if="${param.success}">
     <div class="alert alert-info">You've successfully updated your information!</div>
 </div>
+<form id="reviewForm" method="post" th:action="@{/confirmInfo/save}" th:object="${voter}">
 <h3>Review and confirm Personal Information</h3>
-<table id="voter_info" method="post" role="form" th:action="@{/confirmInfo/save/{id}}" th:object="${voter}">
+    <p style="text-align: center">Attention: if you do not wish to change your information</p>
+    <p style="text-align: center">you can just press "go to the ballot" button</p>
+<table id="voter_info">
     <tr>
         <td>First Name</td>
         <td><input type="text" name="firstName" th:field="${voter.firstName}"/></td>
@@ -66,7 +69,12 @@
 
     <tr>
         <td>State ID Number</td>
-        <td><input type="text" name="idNumber" th:field="${voter.idNumber}"/></td>
+        <td><input type="text" name="idNumber" th:field="${voter.idNumber}" required/></td>
+    </tr>
+
+    <tr>
+        <td>SSN</td>
+        <td><input type="password" name="ssn" placeholder="Re-enter your SSN" required/></td>
     </tr>
 
     <tr>
@@ -114,8 +122,10 @@
         <td><input type="text" name="party" th:field="${voter.party}"/></td>
     </tr>
 </table>
+
 <button class="btn btn-primary" type="submit">Update</button>
-<button class="btn btn-primary" id="goToVote" type="submit">Go to the eBallot</button>
+<button class="btn btn-primary" id="goToVote">Go to the eBallot</button>
+</form>
 <script>
     document.getElementById('goToVote')
         .addEventListener('click', function () {

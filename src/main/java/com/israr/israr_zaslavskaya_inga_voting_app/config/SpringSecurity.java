@@ -4,6 +4,7 @@ import com.israr.israr_zaslavskaya_inga_voting_app.security.CustomVoterDetailsSe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,6 +32,10 @@ public class SpringSecurity {
                         .requestMatchers("/index").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/candidateInfo").permitAll()
+                                .requestMatchers(request -> {
+                                    return request.getMethod().equals(HttpMethod.DELETE.toString())
+                                            && request.getServletPath().matches("/search-candidates/\\d+");
+                                }).permitAll()
 //                        .requestMatchers("/confirmInfo").hasAnyRole("ADMIN", "USER")
 //                        .requestMatchers("/election1").hasAnyRole("USER", "ADMIN")
 //                        .requestMatchers("/election2").hasAnyRole("USER", "ADMIN")

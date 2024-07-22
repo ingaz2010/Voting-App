@@ -6,7 +6,7 @@
     <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
     <title>Title</title>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet"  href="/static/css/style.css" th:href="@{/css/style.css}">
+    <link rel="stylesheet"  href="/static/css/style.css" th:href="@{/static/css/style.css}">
     <style>
         .candidate {
             margin-bottom: 20px;
@@ -38,7 +38,7 @@
                 <li><a class="dropdown-item" href="election">Election</a></li>
                 <li><a class="dropdown-item" href="election2">Election</a></li>
                 <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="candidates-info">Information about Candidates</a></li>
+                <li><a class="dropdown-item" href="candidateInfo-image">Information about Candidates</a></li>
             </ul>
         </li>
         <li class="nav-item">
@@ -52,11 +52,13 @@
 
 <div >
     <h2>Candidates</h2>
-    <form role="form" th:action="@{/candidates-info}" th:object="${candidates}">
+    <form role="form" th:action="@{/candidates-info-image}" th:object="${candidates}">
 
         <div th:each="c : ${candidates}">
             <div class="card" id="candidates">
-                <img th:if="${c}" th:src="${c.imageUrl}" alt="Candidate Image" width = 150px style="float: left">
+                <!-- Candidate Image -->
+                <img th:if="${candidate.image != null}" th:src="@{'data:image/jpeg;base64,' + ${#strings.encodeBase64(candidate.image)}}" alt="Candidate Image" style="width: 150px; height: auto;">
+                <img th:unless="${candidate.image != null}" src="/images/Default.png" alt="Default Image" style="width: 150px; height: auto;">
                 <h2 th:text="${c.name}"></h2>
                 <h3 th:text="${c.role}"></h3>
                 <h3 th:text="${c.party}"></h3>

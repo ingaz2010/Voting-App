@@ -5,13 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Use your voice</title>
-    <link rel="stylesheet"  href="/static/css/style2.css" th:href="@{/css/style2.css}">
-    <!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"-->
-    <!--          rel="stylesheet"-->
-    <!--          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"-->
-    <!--          crossorigin="anonymous">-->
-    <script th:src="@{/js/index.js}"></script>
-    <script src="/js/index.js"></script>
+    <link rel="stylesheet"  href="/static/css/style2.css" th:href="@{/static/css/style2.css}">
+    <script th:src="@{/static/js/index.js}" src="/static/js/index.js"></script>
     <style>
         body{
             background-color: antiquewhite;
@@ -46,35 +41,35 @@
 <br><br><br>
 <div id="voter-starter-menu">
     <div id="section1">
-        <div id="update-info" class="voter-menu-item" style="background-image: url('/images/flag2.jpg')"
+        <div id="update-info" class="voter-menu-item" style="background-image: url('/static/images/flag2.jpg')"
              th:href="@{/menu-admin}"  href="confirmInfo">
             <h2>Update your information</h2>
         </div>
-        <div id="go-to-ballot" class="voter-menu-item" style="background-image: url('/images/vote.jpg')"
+        <div id="go-to-ballot" class="voter-menu-item" style="background-image: url('/static/images/vote.jpg')"
              th:href="@{/election}"  href="election">
             <h2> Vote </h2>
         </div>
     </div><br><br><br>
     <div id="Section2">
-        <div id="candidate-info" class="voter-menu-item" style="background-image: url('/images/image.jpg')"
+        <div id="candidate-info" class="voter-menu-item" style="background-image: url('/static/images/image.jpg')"
              th:href="@{/candidateInfo}"  href="candidates-info">
             <h2> About Candidates </h2>
         </div>
     </div>
 </div>
-<script>
-    document.getElementById('update-info')
-        .addEventListener('click', function () {
-            window.location.href = 'confirmInfo';
-        });
-    document.getElementById('go-to-ballot')
-        .addEventListener('click', function () {
-            window.location.href = 'election';
-        });
-    document.getElementById('candidate-info')
-        .addEventListener('click', function () {
-            window.location.href = 'candidateInfo';
-        });
-</script>
+<!--<script>-->
+<!--    document.getElementById('update-info')-->
+<!--        .addEventListener('click', function () {-->
+<!--            window.location.href = 'confirmInfo';-->
+<!--        });-->
+<!--    document.getElementById('go-to-ballot')-->
+<!--        .addEventListener('click', function () {-->
+<!--            window.location.href = 'election';-->
+<!--        });-->
+<!--    document.getElementById('candidate-info')-->
+<!--        .addEventListener('click', function () {-->
+<!--            window.location.href = 'candidateInfo';-->
+<!--        });-->
+<!--</script>-->
 </body>
 </html>

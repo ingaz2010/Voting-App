@@ -11,7 +11,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -56,7 +58,7 @@ public interface VoteService {
 
     //Candidate findOrCandidate(CandidateDto candidateDto);
 
-    void findOrCreateCandidate(CandidateDto candidate, BindingResult bindingResult, Model model);
+    void findOrCreateCandidate(CandidateDto candidate, MultipartFile imageFile, BindingResult bindingResult, Model model) throws IOException;
 
     List<County> getCounties();
 

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,16 +23,24 @@ public class Candidate {
     private String description;
     //private String year;
 
-    private String imageUrl;
+    //private String imageUrl;
 
     @ManyToMany(mappedBy = "candidates")
     private Set<County> countiesRepresents;
+
+    @ManyToMany
+    @JoinTable(
+            name = "candidates_states",
+            joinColumns = @JoinColumn(name = "candidate_id"),
+            inverseJoinColumns = @JoinColumn(name = "state_id"))
+    private List<State> states;
 
     @ManyToOne
     @JoinColumn(name = "election_id")
     private Election election;
 
-    @OneToOne
-    @JoinColumn(name = "image_id")
-    private AdminUpload adminUpload;
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "image", columnDefinition = "LONGBLOB")
+    private byte[] image;
 }
