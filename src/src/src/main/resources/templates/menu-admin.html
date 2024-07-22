@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Use your voice</title>
+    <link rel="stylesheet"  href="/static/css/style2.css" th:href="@{/static/css/style2.css}">
+    <script th:src="@{/static/js/index.js}" src="/static/js/index.js"></script>
+
+
+    <style>
+        body{
+            background-color: lightskyblue;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg" style="background-color: rgba(0,0,0, 0.4);">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#" id="logo">Use your voice</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!--                <li class="nav-item">-->
+                <!--                    <a class="nav-link active" aria-current="page" th:href="@{/register}">Register</a>-->
+                <!--                </li>-->
+                <!--                <li class="nav-item">-->
+                <!--                    <a class="nav-link active" aria-current="page" th:href="@{/login}">Login</a>-->
+                <!--                </li>-->
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="frame">
+    <div class="container">
+        <div class="row">
+            <h1 class="text-center"> Welcome  </h1>
+        </div>
+    </div>
+
+    <br><br>
+    <img src="/static/images/tenor.gif" th:src="@{/static/images/tenor.gif}" alt="cat typing" width="500px">
+
+    <div id="admin-menu">
+        <div id="create-election" class="admin-menu-item" style="background-image: url('/static/images/flag2.jpg')" >
+            <h2>Enter Election Information</h2>
+        </div>
+        <div id="update-election" class="admin-menu-item" style="background-image: url('/static/images/image.jpg')">
+            <h2> Update Election Information </h2>
+        </div>
+        <div id="create-candidate" class="admin-menu-item" style="background-image: url('/static/images/signup.jpg')">
+            <h2> Enter Candidate Information </h2>
+        </div>
+        <div id="results" class="admin-menu-item" style="background-image: url('/static/images/flag2.jpg')">
+            <h2> View Results </h2>
+        </div>
+        <div id="update-profile" class="admin-menu-item" style="background-image: url('/static/images/vote.jpg')">
+            <h2> Update Profile </h2>
+        </div>
+    </div>
+</div>
+<!--<script>-->
+<!--    document.getElementById('create-election')-->
+<!--        .addEventListener('click', function () {-->
+<!--            window.location.href = 'set-election';-->
+<!--        });-->
+<!--    document.getElementById('update-election')-->
+<!--        .addEventListener('click', function () {-->
+<!--            window.location.href = 'search-election';-->
+<!--        });-->
+<!--    document.getElementById('create-candidate')-->
+<!--        .addEventListener('click', function () {-->
+<!--            window.location.href = 'register-candidate';-->
+<!--        });-->
+<!--    document.getElementById('results')-->
+<!--        .addEventListener('click', function () {-->
+<!--            window.location.href = 'viewResults';-->
+<!--        });-->
+<!--    document.getElementById('update-profile')-->
+<!--        .addEventListener('click', function () {-->
+<!--            window.location.href = 'confirmInfo';-->
+<!--        });-->
+
+<!--</script>-->
+</body>
+</html>

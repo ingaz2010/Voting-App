@@ -1,0 +1,115 @@
+body {
+    background-color: dodgerblue;
+}
+.frame{
+    border: darkblue 7px solid;
+    margin: 40px;
+    margin-top: 5px;
+    padding: 100px;
+    display: flex;
+    justify-content: center;
+    background-image: url("/static/images/flag.jpg");
+    background-position: 100%;
+
+}
+#loginWindow{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    justify-content: space-evenly;
+    border: black 3px solid;
+    border-radius: 15px;
+    box-shadow: 15px 15px 15px 15px grey;
+
+    /*padding: 50px;*/
+    /*width: 350px;*/
+    /*height: 500px;*/
+    background-color: rgba(0,0,0, 0.8);
+}
+.card{
+    background-color: rgba(0,0,0,0);
+}
+.frame img{
+    object-fit: contain;
+    height:100%;
+    width: 100%;
+}
+h2{
+    color: black;
+    text-align: center;
+    font-family: Harrington;
+}
+input{
+    margin: 15px;
+    margin-left: 60px;
+    padding: 10px;
+    border-radius: 5px;
+}
+button{
+    background-color: mediumblue;
+    color: white;
+    align-self: center;
+    position: relative;
+    left: 35%;
+    margin-top: 20px;
+}
+form{
+    display: block;
+    justify-content: center;
+}
+a{
+    color: deeppink;
+    /*font: bold;*/
+}
+p{
+    color: white;
+}
+#logo{
+    /*border: black 2px solid;*/
+    font-family: "Lucida Handwriting";
+    font-size: xxx-large;
+    color: firebrick;
+    width: 450px;
+    text-align: center;
+    margin-left: 40px;
+}
+nav{
+    display: block;
+    background-color: lightgrey;
+}
+
+#starter-menu{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.menu-item{
+    border: 2px solid;
+    width: 350px;
+    height: 350px;
+    text-align: center;
+    background-size: 350px;
+    border-radius: 15px;
+    box-shadow: 15px 15px 15px 15px grey;
+
+    /* transition in size when hovered over */
+    transition-property: width, height;
+    transition-duration: 0.1s;
+}
+.menu-item:hover{
+    width:375px;
+    height:375px;
+}
+#reviewSelections{
+    display: table;
+    text-align: center;
+}
+#candidates{
+    background-color: lightyellow;
+    margin: 50px;
+    border: black 2px;
+    padding: 30px;
+}
+#submitted{
+    margin: auto;
+}

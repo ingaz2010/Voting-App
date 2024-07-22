@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="card">
+    <div th:if="${param.error}">
+        <div class="alert alert-danger">Not Able to Update.</div>
+    </div>
+    <div th:if="${param.success}">
+        <div class="alert alert-info">Election has been successfully updated!</div>
+    </div>
+
+<form id="reviewForm" method="delete" th:action="@{/candidate/delete/{id}(id=${candidate.id})}" th:object="${candidate}">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <h3>Review Candidate you want to delete</h3>
+
+    <table id="candidate_info">
+        <tr>
+            <td>Id</td>
+            <td><input type="text" name="firstName" th:text="${id}"/></td>
+        </tr>
+
+        <tr>
+            <td>Name</td>
+            <td><input type="text" name="lastName" th:text="${name}"/></td>
+        </tr>
+        <tr>
+            <td>Party</td>
+            <td><input type="text" name="firstName" th:text="${party}"/></td>
+        </tr>
+
+        <tr>
+            <td>Position</td>
+            <td><input type="text" name="lastName" th:text="${role}"/></td>
+        </tr>
+    </table>
+    <button class="btn btn-danger" type="submit">Delete</button>
+</form>
+
+</body>
+</html>
