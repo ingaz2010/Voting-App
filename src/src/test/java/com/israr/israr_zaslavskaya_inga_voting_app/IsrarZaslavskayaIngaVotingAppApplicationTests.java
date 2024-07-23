@@ -22,21 +22,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class IsrarZaslavskayaIngaVotingAppApplicationTests {
+class TestRepositories {
 
 //    @Test
 //    void contextLoads() {
 //    }
-    @Mock
+    @Autowired
     private CandidateDao candidateDao;
-    @Mock
+    @Autowired
     private VoterDao voterDao;
-    @Mock
+    @Autowired
     private VoterChoiceDao voterChoiceDao;
-    @Mock
+    @Autowired
     private CountyDao countyDao;
-    @Mock
+    @Autowired
     private ElectionDao electionDao;
+    @Autowired
+    private RoleDao roleDao;
+   // @Mock
+    @Autowired
+    private StateDao stateDao;
 
     @BeforeEach
     void setUp() {
@@ -60,7 +65,7 @@ class IsrarZaslavskayaIngaVotingAppApplicationTests {
         candidates.add(candidate);
 
         // Mock the behavior of candidateDao.findByRole("President")
-        when(candidateDao.findByRole("President")).thenReturn(candidates);
+        //when(candidateDao.findByRole("President")).thenReturn(candidates);
 
         List<Candidate> foundCandidates = candidateDao.findByRole("President");
         // Assertions
@@ -90,7 +95,7 @@ class IsrarZaslavskayaIngaVotingAppApplicationTests {
         sampleVoter.setZip("12345");
 
         // Mock the behavior of voterDao.findByEmail("john.doe@example.com")
-        when(voterDao.findByEmail("jake@mail.com")).thenReturn(sampleVoter);
+        //when(voterDao.findByEmail("jake@mail.com")).thenReturn(sampleVoter);
 
         // Call the method under test
         Voter foundVoter = voterDao.findByEmail("jake@mail.com");
@@ -146,7 +151,7 @@ class IsrarZaslavskayaIngaVotingAppApplicationTests {
         voterChoices.add(voterChoice2);
 
     // Mocking repository method
-    when(voterChoiceDao.findAllByVoterId(1L)).thenReturn(voterChoices);
+   // when(voterChoiceDao.findAllByVoterId(1L)).thenReturn(voterChoices);
 
     // Calling the method under test
     List<VoterChoice> foundVoterChoices = voterChoiceDao.findAllByVoterId(1L);
@@ -173,7 +178,7 @@ class IsrarZaslavskayaIngaVotingAppApplicationTests {
         county.setName("Sample County");
 
         // Mocking repository method
-        when(countyDao.findByName("Sample County")).thenReturn(county);
+       // when(countyDao.findByName("Sample County")).thenReturn(county);
 
         // Calling the method under test
         County foundCounty = countyDao.findByName("Sample County");
@@ -201,7 +206,7 @@ class IsrarZaslavskayaIngaVotingAppApplicationTests {
         presidentElection.add(election1);
 
         // Mocking repository method
-        when(electionDao.findAllByPosition("President")).thenReturn(presidentElection);
+       // when(electionDao.findAllByPosition("President")).thenReturn(presidentElection);
 
         // Calling the method under test
         List<Election> foundElections = electionDao.findAllByPosition("President");
@@ -228,7 +233,7 @@ class IsrarZaslavskayaIngaVotingAppApplicationTests {
         elections.add(election3);
 
         // Mocking repository method
-        when(electionDao.findByIsActive(true)).thenReturn(elections);
+      //  when(electionDao.findByIsActive(true)).thenReturn(elections);
 
         // Calling the method under test
         List<Election> foundElections = electionDao.findByIsActive(true);
@@ -259,8 +264,8 @@ class IsrarZaslavskayaIngaVotingAppApplicationTests {
         elections.add(election3);
 
         // Mocking repository method
-        when(electionDao.findElectionByPosition("President")).thenReturn(election1);
-        when(electionDao.findElectionByPosition("Mayor")).thenReturn(election3);
+//        when(electionDao.findElectionByPosition("President")).thenReturn(election1);
+//        when(electionDao.findElectionByPosition("Mayor")).thenReturn(election3);
 
         // Calling the method under test
         Election foundElection1 = electionDao.findElectionByPosition("President");
@@ -274,5 +279,55 @@ class IsrarZaslavskayaIngaVotingAppApplicationTests {
         assertThat(foundElection1.getIsActive()).isTrue();
 
         assertThat(foundElection2).isNull(); // Asserting that Governor is not present
+    }
+
+    //Test Role findByName(String name) from RoleDao
+    @Test
+    public void testRoleFindByName() {
+        // Sample data setup
+        Role role1 = new Role();
+        role1.setId(1L);
+        role1.setName("ADMIN");
+        Role role2 = new Role();
+        role2.setId(2L);
+        role2.setName("USER");
+
+        // Save sample data to the database
+        roleDao.save(role1);
+        roleDao.save(role2);
+
+        // Calling the repository method under test
+        Role foundRole1 = roleDao.findByName("ADMIN");
+        Role foundRole2 = roleDao.findByName("SuperAdmin"); // Assuming SuperAdmin does not exist
+
+        // Assertions
+        assertThat(foundRole1).isNotNull();
+        assertThat(foundRole1.getId()).isEqualTo(1L);
+        assertThat(foundRole1.getName()).isEqualTo("ADMIN");
+
+        assertThat(foundRole2).isNull(); // Asserting that SuperAdmin is not present
+    }
+
+    //Test  State findByStateName(String stateName) from stateDao
+    @Test
+    public void testFindByStateName() {
+        // Sample data setup
+        State state1 = new State(1L, "California", true, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        State state2 = new State(2L, "New York", true, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        // Save sample data to the database
+        stateDao.save(state1);
+        stateDao.save(state2);
+
+        // Calling the repository method under test
+        State foundState1 = stateDao.findByStateName("California");
+        State foundState2 = stateDao.findByStateName("Texas"); // Assuming Texas does not exist
+
+        // Assertions
+        assertThat(foundState1).isNotNull();
+        assertThat(foundState1.getId()).isEqualTo(1L);
+        assertThat(foundState1.getStateName()).isEqualTo("California");
+
+        assertThat(foundState2).isNull(); // Asserting that Texas is not present
     }
 }

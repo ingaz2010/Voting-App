@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -266,14 +265,15 @@ public class VoteServiceImpl implements VoteService{
         return counties;
     }
 
+    //create voter's profile
     @Override
     public void createVoter(VoterDto voterdto, BindingResult bindingResult, Model model) {
-        Voter search = findVoterByEmail(voterdto.getEmail());
-        if (search == null) {
+        Voter search = findVoterByEmail(voterdto.getEmail()); //search by email for existing profile
+        if (search == null) { //check if it is null,create new voter if it is
            Voter voter = new Voter();
-           convertDtoToVoter(voterdto, voter);
+           convertDtoToVoter(voterdto, voter); //assign input info to new voter
 
-            String roleName;
+            String roleName;   //assign role
             if(voterdto.isAdminRegistration()){
                 roleName = "ROLE_ADMIN";
             } else{
@@ -290,9 +290,11 @@ public class VoteServiceImpl implements VoteService{
 
             //Assign the role to the user
             voter.setRoles(Collections.singletonList(role));
+            voterDao.save(voter);
 
+            //check if county already exists
            County county = countyDao.findByName(voterdto.getCounty());
-           if (county == null) {
+           if (county == null) { //create new one if it does not exist
                county = new County();
                county.setName(voterdto.getCounty());
                county.getVoters().add(voter);
@@ -303,17 +305,18 @@ public class VoteServiceImpl implements VoteService{
            }
            countyDao.save(county);
 
+           //check if state exists
            State state = stateDao.findByStateName(voterdto.getState());
            if(state == null){
-               state = new State();
+               state = new State(); //create new if it is null
                state.setStateName(voterdto.getState());
-               state.setCounties(new ArrayList<County>());
+               state.setCounties(new ArrayList<>());
                state.getCounties().add(county);
                county.setState(state);
                //state.getCounties().add(county);
                //state.getVoters().add(voter);
-               state.setVoters(new ArrayList<Voter>());
-               state.getVoters().add(voter);
+               state.setVoters(new ArrayList<>());
+               //state.getVoters().add(voter);
            }else{
                County existingCounty = null;
                for(County c : state.getCounties()){
@@ -325,7 +328,11 @@ public class VoteServiceImpl implements VoteService{
                    state.getCounties().add(county);
                }
            }
+
+           county.setState(state);
+           state.getVoters().add(voter);
            stateDao.save(state);
+           countyDao.save(county);
 
            voter.setCounty(county);
            voter.setState(state);
@@ -470,9 +477,10 @@ public class VoteServiceImpl implements VoteService{
     public Boolean deleteCandidateById(Long id) {
         Candidate candidate = candidateDao.findById(id).orElse(null);
         candidate.setElection(null);
-        candidate.setElection(null);
         candidate.setCountiesRepresents(null);
+        System.out.println("Before delete: " + candidate);
         candidateDao.deleteById(id);
+        System.out.println("After: " + candidate);
         candidate = candidateDao.findById(id).orElse(null);
         return candidate != null;
     }

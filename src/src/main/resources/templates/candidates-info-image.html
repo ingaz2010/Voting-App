@@ -38,7 +38,7 @@
                 <li><a class="dropdown-item" href="election">Election</a></li>
                 <li><a class="dropdown-item" href="election2">Election</a></li>
                 <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="candidateInfo-image">Information about Candidates</a></li>
+                <li><a class="dropdown-item" href="candidates-info-image">Information about Candidates</a></li>
             </ul>
         </li>
         <li class="nav-item">
@@ -57,11 +57,8 @@
         <div th:each="candidate : ${candidates}">
             <div class="card" id="candidates">
                 <!-- Candidate Image -->
-                <img th:if="${c.image != null}" th:src="@{'data:image/jpeg;base64,' + ${#strings.encodeBase64(c.image)}}" alt="Candidate Image" class="img-thumbnail" width='150px' height="auto">
+                <img th:if="${c.image != null}" th:src="@{'data:image/jpg;base64,' + ${#strings.encodeBase64(c.image)}}" alt="Candidate Image" class="img-thumbnail" width='150px' height="auto">
                 <img th:unless="${c.image != null}" th:src="@{/static/images/Default.png}" alt="Default Image" class="img-thumbnail" width='150px' height="auto">
-<!--                &lt;!&ndash; Candidate Image &ndash;&gt;-->
-<!--                <img th:if="${candidate.image != null}" th:src="@{'data:image/jpg;base64,' + ${#strings.encodeBase64(candidate.image)}}" alt="Candidate Image" style="width: 150px; height: auto;">-->
-<!--                <img th:unless="${candidate.image != null}" th:src="@{/static/images/Default.png}" alt="Default Image" style="width: 150px; height: auto;">-->
                 <h2 th:text="${candidate.name}"></h2>
                 <h3 th:text="${candidate.role}"></h3>
                 <h3 th:text="${candidate.party}"></h3>

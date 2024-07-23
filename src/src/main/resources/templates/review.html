@@ -35,7 +35,8 @@
                 <li><a class="dropdown-item" href="election">Election</a></li>
                 <li><a class="dropdown-item" href="election2">Election</a></li>
                 <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="candidateInfo-image">Information about Candidates</a></li>
+                <li><a class="dropdown-item" href="candidates-info-image">Information about Candidates</a></li>
+
             </ul>
         </li>
         <li class="nav-item">
@@ -64,14 +65,13 @@
                 <tr>
                     <td><span th:text="${c.election.position}"></span></td>
                     <td><span th:text="${c.candidateSelected.name}"></span></td>
-                    <td><button class="btn btn-primary" type="submit" th:href="@{/election}" id="back-to-election">Edit</button></td>
+                    <td><button class="btn btn-primary" type="submit" id="back-to-election" th:href="@{/election}" >Edit</button></td>
                 </tr>
             </li>
         </ul>
-
-
     </table>
     <button class="btn btn-primary" type="submit" id="finished">Submit</button>
+    </form>
 </div>
 
 <script>

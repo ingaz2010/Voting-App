@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     // Your code that accesses 'login' element goes here
     document.getElementById('create-candidate').addEventListener('click', function () {
-        window.location.href = 'register-candidate'; // Example navigation
+        window.location.href = 'register-candidate-image'; // Example navigation
     });
 });document.addEventListener('DOMContentLoaded', function() {
     // Your code that accesses 'login' element goes here
@@ -57,18 +57,42 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'candidates-info-image'; // Example navigation
     });
 });
-function deleteCandidate(id) {
-    if (confirm("Are you sure you want to delete this candidate?")) {
-        fetch(`/search-candidates/${id}`, {
-            method: 'DELETE'
-        })
-            .then(response => {
-                if (response.ok) {
-                    window.location.href = '/search-candidates?success';
-                } else {
-                    console.error('Failed to delete candidate.');
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    }
-}
+document.addEventListener('DOMContentLoaded', function() {
+    // Your code that accesses 'login' element goes here
+    document.getElementById('delete-candidate').addEventListener('click', function () {
+        window.location.href = 'search-candidates'; // Example navigation
+    });
+});
+document.addEventListener('DOMContentLoaded', function() {
+    // Your code that accesses 'login' element goes here
+    document.getElementById('go-to-next-election').addEventListener('click', function () {
+        window.location.href = 'election2'; // Example navigation
+    });
+});
+document.addEventListener('DOMContentLoaded', function() {
+    // Your code that accesses 'login' element goes here
+    document.getElementById('go-to-next-review').addEventListener('click', function () {
+        window.location.href = 'review'; // Example navigation
+    });
+});
+
+
+// const delete-candidate = (candidateId) => {
+//     fetch(`/candidates/${candidateId}`, {
+//         method: 'DELETE'
+//     })
+//         .then(response => {
+//             if (response.ok) {
+//                 console.log('Candidate deleted successfully');
+//                 // Handle success scenario
+//             } else {
+//                 console.error('Failed to delete candidate');
+//                 // Handle error scenario
+//             }
+//         })
+//         .catch(error => {
+//             console.error('Error:', error);
+//             // Handle network error scenario
+//         });
+// };
+
