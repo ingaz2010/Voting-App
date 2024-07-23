@@ -18,3 +18,5 @@ Backend: Implemented in Java with Spring Boot framework for robust and scalable 
 Frontend: Developed using HTML, CSS, and JavaScript to create an intuitive and responsive user interface.
 Database: MySQL is used to store voter information, candidate profiles, election details, and voting records securely.
 Security: Spring Security Implements authentication and authorization mechanisms to ensure only authenticated users can access voting features. Uses encryption to protect sensitive data and prevent tampering with votes.
+
+GitHub URL: https://github.com/ingaz2010/Voting-App
